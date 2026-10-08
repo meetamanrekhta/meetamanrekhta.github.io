@@ -1,10 +1,471 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Meet Aman Rekhta</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meet Aman Rekhta | Portfolio</title>
+    <style>
+        /* --- Reset & Base --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+:root {
+            --bg: #0a0a0f;
+            --surface: #14141c;
+            --border: #26263a;
+            --text: #f1f1f5;
+            --muted: #8b8ba7;
+            --accent: #7c5cff;
+            --accent2: #00d4ff;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg);color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* --- Background Glow --- */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px; background: radial-gradient(circle, rgba(124, 92, 255, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            padding: 24px 0;display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+/* --- Hero --- */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 0;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;padding: 6px 16px;
+            border-radius: 50px;
+            background: rgba(124, 92, 255, 0.1);
+            border: 1px solid rgba(124, 92, 255, 0.3);
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 24px;
+        }
+
+        .badge-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 2s infinite;}
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+        }
+.hero h1 span {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--muted);
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        .buttons {display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s;
+            cursor: pointer;
+            border: none;
+            display: inline-block;}
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(124, 92, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text);border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* --- Sections --- */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-label {
+            font-size: 0.85rem;font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 12px;
+        }
+.section-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            margin-bottom: 40px;
+            letter-spacing: -0.02em;
+        }
+
+        /* --- About --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .about-text {
+            color: var(--muted);font-size: 1.05rem;
+        }
+
+        .about-text p {
+            margin-bottom: 16px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .skill-tag {
+            padding: 6px 14px;border-radius: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* --- Projects --- */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(124, 92, 255, 0.4);
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .project-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(124, 92, 255, 0.2), rgba(0, 212, 255, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .project-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .project-card p {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .project-tags span {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 0.03em;
+        }
+
+        /* --- Contact --- */
+        .contact-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .contact-box h2 {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .contact-box p {
+            color: var(--muted);
+            margin-bottom: 32px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 640px) {
+            .nav-links { display: none; }
+            .contact-box { padding: 40px 24px; }
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello World!</h1>
-    <p>Welcome to my personal website.</p>
+
+    <div class="container">
+        <!-- NAVIGATION -->
+        <nav>
+            <div class="logo">meet.dev</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="badge">
+                <span class="badge-dot"></span>
+                Available for work
+            </div>
+            <h1>Hi, I'm <span>Meet Aman Rekhta</span></h1>
+            <p>I build modern, clean, and user-friendly websites. Passionate about web development and creating digital experiences that matter.</p>
+            <div class="buttons">
+                <a href="#projects" class="btn btn-primary">View My Work</a>
+                <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about">
+            <p class="section-label">About</p>
+            <h2 class="section-title">A little about me</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>Hello! I'm Meet, a developer who loves turning ideas into real, working websites. My journey in web development started with curiosity — and quickly turned into a passion for building things on the internet.</p>
+                    <p>I focus on writing clean code, designing simple interfaces, and creating experiences that people enjoy using. I'm constantly learning new tools and technologies to improve my craft.</p>
+                    <p>Here are some technologies I work with:</p>
+                    <div class="skills">
+                        <span class="skill-tag">HTML5</span>
+                        <span class="skill-tag">CSS3</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">Git & GitHub</span>
+                        <span class="skill-tag">Responsive Design</span>
+                        <span class="skill-tag">UI/UX</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects">
+            <p class="section-label">Portfolio</p>
+            <h2 class="section-title">Things I've built</h2>
+            <div class="projects-grid">
+
+                <div class="project-card">
+                    <div class="project-icon">🌐</div>
+                    <h3>Personal Portfolio</h3>
+                    <p>A modern, responsive portfolio website built from scratch and deployed for free using GitHub Pages.</p>
+                    <div class="project-tags">
+                        <span>HTML</span> • <span>CSS</span> • <span>GITHUB</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-icon">📱</div>
+                    <h3>Responsive Landing Page</h3>
+                    <p>A sleek, mobile-first landing page designed with modern UI principles and smooth animations.</p>
+                    <div class="project-tags">
+                        <span>HTML</span> • <span>CSS</span> • <span>JS</span>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-icon">⚡</div>
+                    <h3>Web App Project</h3>
+                    <p>A small web application that helps users organize tasks and boost their daily productivity.</p>
+                    <div class="project-tags">
+                        <span>JAVASCRIPT</span> • <span>API</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact">
+            <div class="contact-box">
+                <h2>Let's work together</h2>
+                <p>I'm always open to new opportunities, collaborations, or just a friendly chat. Feel free to reach out!</p>
+                <a href="mailto:your.email@example.com" class="btn btn-primary">Say Hello 👋</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://github.com/meetamanrekhta" target="_blank">GitHub</a>
+                <a href="#" target="_blank">LinkedIn</a>
+                <a href="#" target="_blank">Twitter</a>
+                <a href="mailto:your.email@example.com">Email</a>
+            </div>
+            <p>© 2024 Meet Aman Rekhta. Built with ❤️ and GitHub Pages.</p>
+        </div>
+    </footer>
+
 </body>
 </html>
