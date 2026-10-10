@@ -881,4 +881,12 @@ accountForm.addEventListener("submit", async (event) => {
       "Could not connect to the account service. Set up the registration backend first.";
   }
 });
+const youtubeUrl = safeYouTubeUrl(film.youtube);
+if (youtubeUrl) {
+  const link = createElement("a", "youtube-link", "▶ Watch on YouTube");
+  link.href = youtubeUrl;
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  content.append(link);
+}
 
