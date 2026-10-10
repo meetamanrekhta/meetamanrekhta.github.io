@@ -745,50 +745,25 @@
   </script>
 </body>
 </html>
-Expand
-Save it as an .html file and open it in a browser. Films are stored in the browser’s localStorage, so they remain after a refresh.
-
-Copy response
-Good response
-Bad response
-workik
-Workik Standard
-You
-i wan to add for user account creat
-
-A
-10 october, 20:54
-Edit
-Retry
-Yes. Add a Create account form to your page. Since your current page is HTML-only, the form needs a backend endpoint to create real accounts safely—don’t save passwords in localStorage.
-
-1. Add a link in the header
-Place this inside <header>, next to the existing badge:
-
-html
-
 <a class="btn btn-secondary account-link" href="#account">Create account</a>
-2. Add these styles before </style>
-css
-
 .account-link {
   text-decoration: none;
 }
+
 .account-section {
   max-width: 680px;
   margin: 0 auto 40px;
 }
+
 .account-message {
   min-height: 1.5em;
   margin-top: 12px;
   color: var(--gold);
   font-size: 0.9rem;
 }
-3. Add the registration form before </main>
-html
-
 <section class="add-section account-section" id="account" aria-labelledby="account-title">
   <h2 class="form-title" id="account-title">Create your account</h2>
+
   <form id="account-form">
     <div class="form-grid">
       <div class="input-group">
@@ -803,6 +778,7 @@ html
           placeholder="Your name"
         >
       </div>
+
       <div class="input-group">
         <label for="account-email">Email</label>
         <input
@@ -814,6 +790,7 @@ html
           placeholder="you@example.com"
         >
       </div>
+
       <div class="input-group">
         <label for="account-password">Password</label>
         <input
@@ -826,6 +803,7 @@ html
           placeholder="At least 8 characters"
         >
       </div>
+
       <div class="input-group">
         <label for="account-confirm-password">Confirm password</label>
         <input
@@ -839,29 +817,29 @@ html
         >
       </div>
     </div>
+
     <button class="btn btn-primary" type="submit">Create account</button>
     <p class="account-message" id="account-message" aria-live="polite"></p>
   </form>
 </section>
-4. Add this JavaScript inside your existing <script>
-Place it before the final renderFilms(); call:
-
-js
-
 const accountForm = document.getElementById("account-form");
 const accountMessage = document.getElementById("account-message");
+
 accountForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   accountMessage.textContent = "";
+
   const formData = new FormData(accountForm);
   const name = String(formData.get("name")).trim();
   const email = String(formData.get("email")).trim();
   const password = String(formData.get("password"));
   const confirmPassword = String(formData.get("confirmPassword"));
+
   if (password !== confirmPassword) {
     accountMessage.textContent = "Passwords do not match.";
     return;
   }
+
   try {
     const response = await fetch("/api/auth/register", {
       method: "POST",
@@ -869,11 +847,14 @@ accountForm.addEventListener("submit", async (event) => {
       credentials: "include",
       body: JSON.stringify({ name, email, password })
     });
+
     const result = await response.json().catch(() => ({}));
+
     if (!response.ok) {
       accountMessage.textContent = result.message || "Could not create your account.";
       return;
     }
+
     accountMessage.textContent = "Account created successfully.";
     accountForm.reset();
   } catch {
@@ -881,6 +862,32 @@ accountForm.addEventListener("submit", async (event) => {
       "Could not connect to the account service. Set up the registration backend first.";
   }
 });
+<div class="input-group">
+  <label for="film-youtube">YouTube link</label>
+  <input
+    id="film-youtube"
+    name="youtube"
+    type="url"
+    placeholder="https://www.youtube.com/watch?v=..."
+  >
+</div>
+function safeYouTubeUrl(value) {
+  if (!value) return "";
+
+  try {
+    const url = new URL(value);
+    const allowedHosts = ["youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be"];
+
+    if (url.protocol !== "https:" || !allowedHosts.includes(url.hostname)) {
+      return "";
+    }
+
+    return url.href;
+  } catch {
+    return "";
+  }
+}
+youtube: safeYouTubeUrl(String(formData.get("youtube")).trim()),
 const youtubeUrl = safeYouTubeUrl(film.youtube);
 if (youtubeUrl) {
   const link = createElement("a", "youtube-link", "▶ Watch on YouTube");
@@ -888,5 +895,18 @@ if (youtubeUrl) {
   link.target = "_blank";
   link.rel = "noopener noreferrer";
   content.append(link);
+}
+.youtube-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: #ff7278;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.youtube-link:hover {
+  color: var(--gold);
+  text-decoration: underline;
 }
 
