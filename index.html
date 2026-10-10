@@ -1,1076 +1,406 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aman's Cinema | Film Collection</title>
-<style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter','Segoe UI',sans-serif; }
-:root {
-  --bg:#0a0a0f; --surface:#14141c; --surface-2:#1a1a24; --border:#26263a;
-  --text:#f1f1f5; --muted:#8b8ba7; --gold:#f5b942; --red:#e50914; --green:#22c55e;
-}
-body { background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; }
-body::before {
-  content:''; position:fixed; top:-300px; left:50%; transform:translateX(-50%);
-  width:900px; height:900px;
-  background:radial-gradient(circle, rgba(229,9,20,0.12) 0%, transparent 70%);
-  pointer-events:none; z-index:0;
-}
-.container { max-width:1200px; margin:0 auto; padding:0 24px; position:relative; z-index:1; }
-
-header {
-  padding:28px 0; display:flex; justify-content:space-between; align-items:center;
-  border-bottom:1px solid var(--border); margin-bottom:40px; flex-wrap:wrap; gap:16px;
-}
-.logo { font-size:1.3rem; font-weight:800; display:flex; align-items:center; gap:10px; }
-.logo-icon {
-  width:38px; height:38px; border-radius:10px;
-  background:linear-gradient(135deg,var(--red),var(--gold));
-  display:flex; align-items:center; justify-content:center; font-size:1.1rem;
-}
-.logo-text {
-  background:linear-gradient(135deg,var(--red),var(--gold));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-}
-.header-right { display:flex; gap:12px; align-items:center; }
-.stat-badge {
-  background:var(--surface); border:1px solid var(--border);
-  padding:6px 14px; border-radius:50px; font-size:0.8rem; color:var(--muted);
-}
-.stat-badge strong { color:var(--gold); }
-.home-link { color:var(--muted); text-decoration:none; font-size:0.9rem; }
-
-.hero { text-align:center; padding:30px 0 50px; }
-.hero-badge {
-  display:inline-flex; align-items:center; gap:8px;
-  padding:6px 16px; border-radius:50px;
-  background:rgba(229,9,20,0.1); border:1px solid rgba(229,9,20,0.3);
-  font-size:0.75rem; color:var(--red); font-weight:700;
-  letter-spacing:0.08em; margin-bottom:18px; text-transform:uppercase;
-}
-.hero h1 { font-size:clamp(2rem,5vw,3.5rem); font-weight:800; line-height:1.1; margin-bottom:14px; }
-.hero h1 span {
-  background:linear-gradient(135deg,var(--red),var(--gold));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-}
-.hero p { color:var(--muted); max-width:600px; margin:0 auto; }
-
-.stats-bar { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:16px; margin-bottom:40px; }
-.stat-card {
-  background:var(--surface); border:1px solid var(--border); border-radius:14px;
-  padding:20px; text-align:center; transition:all 0.3s;
-}
-.stat-card:hover { border-color:rgba(245,185,66,0.4); transform:translateY(-3px); }
-.stat-value {
-  font-size:1.8rem; font-weight:800;
-  background:linear-gradient(135deg,var(--red),var(--gold));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-}
-.stat-label { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.05em; margin-top:4px; }
-
-.add-section {
-  background:var(--surface); border:1px solid var(--border); border-radius:20px;
-  padding:32px; margin-bottom:40px; position:relative; overflow:hidden;
-}
-.add-section::before {
-  content:''; position:absolute; top:0; left:0; right:0; height:3px;
-  background:linear-gradient(90deg,var(--red),var(--gold));
-}
-.form-title { font-size:1.2rem; font-weight:700; margin-bottom:24px; }
-.form-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-bottom:16px; }
-.form-grid.full { grid-template-columns:1fr; }
-.input-group { display:flex; flex-direction:column; gap:6px; }
-.input-group label {
-  font-size:0.72rem; color:var(--muted); font-weight:700;
-  text-transform:uppercase; letter-spacing:0.05em;
-}
-.input-group input, .input-group textarea {
-  padding:11px 14px; border-radius:10px; background:var(--surface-2);
-  border:1px solid var(--border); color:var(--text); font-size:0.9rem;
-  outline:none; transition:all 0.2s; font-family:inherit;
-}
-.input-group textarea { resize:vertical; min-height:70px; }
-.input-group input:focus, .input-group textarea:focus {
-  border-color:var(--red); box-shadow:0 0 0 3px rgba(229,9,20,0.1);
-}
-.input-group input::placeholder, .input-group textarea::placeholder { color:#55556a; }
-
-.star-input { display:flex; gap:6px; padding:8px 0; }
-.star-input .star {
-  font-size:1.6rem; cursor:pointer; color:#33334a;
-  transition:all 0.2s; user-select:none; line-height:1;
-}
-.star-input .star:hover, .star-input .star.active { color:var(--gold); }
-
-.btn {
-  padding:13px 24px; border-radius:10px; border:none;
-  font-size:0.95rem; font-weight:700; cursor:pointer;
-  transition:all 0.25s; font-family:inherit;
-}
-.btn-primary {
-  background:linear-gradient(135deg,var(--red),var(--gold));
-  color:#fff; width:100%;
-}
-.btn-primary:hover { transform:translateY(-2px); box-shadow:0 10px 30px rgba(229,9,20,0.3); }
-
-.controls { display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px; margin-bottom:30px; }
-@media (max-width:700px) { .controls { grid-template-columns:1fr; } }
-.search-box { position:relative; }
-.search-box input {
-  width:100%; padding:13px 16px 13px 44px; border-radius:10px;
-  background:var(--surface); border:1px solid var(--border);
-  color:var(--text); font-size:0.95rem; outline:none;
-}
-.search-box input:focus { border-color:var(--red); }
-.search-box::before {
-  content:'🔍'; position:absolute; left:14px; top:50%;
-  transform:translateY(-50%); font-size:1rem; opacity:0.6;
-}
-.filter-select {
-  padding:13px 16px; border-radius:10px; background:var(--surface);
-  border:1px solid var(--border); color:var(--text);
-  font-size:0.9rem; outline:none; cursor:pointer; font-family:inherit;
-}
-
-.films-header {
-  display:flex; justify-content:space-between; align-items:center;
-  margin-bottom:20px; flex-wrap:wrap; gap:12px;
-}
-.films-header h2 { font-size:1.3rem; font-weight:700; }
-.films-grid {
-  display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-  gap:22px; margin-bottom:60px;
-}
-.film-card {
-  background:var(--surface); border:1px solid var(--border);
-  border-radius:16px; overflow:hidden; position:relative;
-  transition:all 0.3s ease; animation:fadeIn 0.4s ease;
-  display:flex; flex-direction:column;
-}
-@keyframes fadeIn { from{opacity:0;transform:translateY(12px);} to{opacity:1;transform:translateY(0);} }
-.film-card:hover {
-  transform:translateY(-6px); border-color:rgba(229,9,20,0.4);
-  box-shadow:0 18px 40px rgba(0,0,0,0.4);
-}
-.film-poster {
-  width:100%; height:260px;
-  background:linear-gradient(135deg,#1a1a24,#0f0f18);
-  background-size:cover; background-position:center;
-  position:relative; display:flex; align-items:center; justify-content:center;
-  font-size:3rem;
-}
-.film-poster::after {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(to top,var(--surface) 0%, transparent 60%);
-}
-.film-body { padding:20px; flex:1; display:flex; flex-direction:column; }
-.film-title { font-size:1.15rem; font-weight:700; margin-bottom:10px; line-height:1.3; }
-.film-stars { display:flex; gap:2px; margin-bottom:12px; font-size:0.95rem; }
-.film-stars .filled { color:var(--gold); }
-.film-stars .empty { color:#33334a; }
-.film-meta { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
-.badge { display:inline-block; padding:3px 10px; border-radius:6px; font-size:0.72rem; font-weight:600; }
-.badge-lang { background:rgba(124,92,255,0.15); border:1px solid rgba(124,92,255,0.3); color:#a78bfa; }
-.badge-cinema { background:rgba(245,185,66,0.15); border:1px solid rgba(245,185,66,0.3); color:var(--gold); }
-.badge-genre { background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.3); color:var(--green); }
-.film-review {
-  font-size:0.85rem; color:var(--muted); margin-bottom:12px; flex:1;
-  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
-}
-.film-date { font-size:0.72rem; color:#55556a; margin-top:8px; }
-.film-actions {
-  display:flex; gap:8px; margin-top:12px;
-  padding-top:12px; border-top:1px solid var(--border);
-}
-.action-btn {
-  flex:1; padding:8px; border-radius:8px; border:1px solid var(--border);
-  background:transparent; color:var(--muted); font-size:0.8rem; font-weight:600;
-  cursor:pointer; transition:all 0.2s; font-family:inherit;
-}
-.action-btn:hover { background:var(--surface-2); color:var(--text); }
-.action-btn.delete:hover { color:var(--red); border-color:rgba(229,9,20,0.4); }
-.action-btn.edit:hover { color:var(--gold); border-color:rgba(245,185,66,0.4); }
-
-.empty-state { text-align:center; padding:80px 20px; color:var(--muted); grid-column:1/-1; }
-.empty-icon { font-size:3.5rem; margin-bottom:16px; opacity:0.5; }
-.empty-state h3 { font-size:1.2rem; margin-bottom:8px; color:var(--text); }
-
-.modal-overlay {
-  position:fixed; inset:0; background:rgba(0,0,0,0.85);
-  backdrop-filter:blur(6px); display:none; align-items:center;
-  justify-content:center; z-index:1000; padding:20px;
-}
-.modal-overlay.active { display:flex; }
-.modal {
-  background:var(--surface); border:1px solid var(--border);
-  border-radius:20px; padding:32px; max-width:500px; width:100%;
-  max-height:90vh; overflow-y:auto; position:relative;
-}
-.modal h2 { font-size:1.4rem; margin-bottom:20px; }
-.modal-close {
-  position:absolute; top:16px; right:16px; background:transparent;
-  border:none; color:var(--muted); font-size:1.5rem;
-  cursor:pointer; padding:4px 8px; border-radius:6px;
-}
-.modal-close:hover { color:var(--red); }
-.modal .input-group { margin-bottom:14px; }
-
-footer { padding:40px 0; text-align:center; border-top:1px solid var(--border); color:var(--muted); font-size:0.85rem; }
-footer span {
-  background:linear-gradient(135deg,var(--red),var(--gold));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-weight:700;
-}
-
-.toast {
-  position:fixed; bottom:30px; left:50%;
-  transform:translateX(-50%) translateY(100px);
-  background:var(--surface); border:1px solid var(--green);
-  padding:14px 24px; border-radius:12px; color:var(--text);
-  font-size:0.9rem; font-weight:600;
-  box-shadow:0 10px 40px rgba(0,0,0,0.5);
-  z-index:2000; opacity:0; transition:all 0.3s ease;
-}
-.toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
-</style>
-</head>
-<body>
-
-<div class="container">
-  <header>
-    <div class="logo">
-      <div class="logo-icon">🎬</div>
-      <div class="logo-text">Aman's Cinema</div>
-    </div>
-    <div class="header-right">
-      <div class="stat-badge">🎞️ <strong id="headerCount">0</strong> Films</div>
-      <a href="https://amanmirza.github.io" class="home-link">← Home</a>
-    </div>
-  </header>
-
-  <section class="hero">
-    <div class="hero-badge">🎥 My Film Diary</div>
-    <h1>Films I've <span>Watched</span></h1>
-    <p>Track every movie you watch — with ratings, reviews, and where you saw it.</p>
-  </section>
-
-  <div class="stats-bar">
-    <div class="stat-card">
-      <div class="stat-value" id="statTotal">0</div>
-      <div class="stat-label">Total Films</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value" id="statAvg">0.0</div>
-      <div class="stat-label">Avg Rating</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value" id="statLangs">0</div>
-      <div class="stat-label">Languages</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-value" id="statTop">—</div>
-      <div class="stat-label">Top Rated</div>
-    </div>
-  </div>
-
-  <section class="add-section">
-    <div class="form-title">➕ Add a New Film</div>
-    <form id="filmForm">
-      <div class="form-grid">
-        <div class="input-group">
-          <label>Film Name *</label>
-          <input type="text" id="filmName" placeholder="e.g. Interstellar" required>
-        </div>
-        <div class="input-group">
-          <label>Language *</label>
-          <input type="text" id="filmLang" placeholder="e.g. English" required>
-        </div>
-        <div class="input-group">
-          <label>Cinema / Platform *</label>
-          <input type="text" id="filmCinema" placeholder="e.g. PVR / Netflix" required>
-        </div>
-        <div class="input-group">
-          <label>Genre</label>
-          <input type="text" id="filmGenre" placeholder="e.g. Sci-Fi">
-        </div>
-      </div>
-
-      <div class="form-grid">
-        <div class="input-group">
-          <label>Poster URL (optional)</label>
-          <input type="url" id="filmPoster" placeholder="https://...jpg">
-        </div>
-        <div class="input-group">
-          <label>Your Rating</label>
-          <div class="star-input" id="starInput">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-grid full">
-        <div class="input-group">
-          <label>Review / Notes</label>
-          <textarea id="filmReview" placeholder="What did you think about this film?"></textarea>
-        </div>
-      </div>
-
-      <button type="submit" class="btn btn-primary">Add Film 🎬</button>
-    </form>
-  </section>
-
-  <div class="controls">
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Search films...">
-    </div>
-    <select class="filter-select" id="filterLang">
-      <option value="">All Languages</option>
-    </select>
-    <select class="filter-select" id="filterRating">
-      <option value="">All Ratings</option>
-      <option value="5">⭐⭐⭐⭐⭐ (5 only)</option>
-      <option value="4">⭐⭐⭐⭐ (4+)</option>
-      <option value="3">⭐⭐⭐ (3+)</option>
-    </select>
-  </div>
-
-  <div class="films-header">
-    <h2>📽️ My Collection</h2>
-    <div class="stat-badge" id="filmCount">0 Films</div>
-  </div>
-
-  <div class="films-grid" id="filmsGrid"></div>
-</div>
-
-<div class="modal-overlay" id="editModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeEditModal()">✕</button>
-    <h2>✏️ Edit Film</h2>
-    <form id="editForm">
-      <input type="hidden" id="editIndex">
-      <div class="input-group">
-        <label>Film Name</label>
-        <input type="text" id="editName" required>
-      </div>
-      <div class="input-group">
-        <label>Language</label>
-        <input type="text" id="editLang" required>
-      </div>
-      <div class="input-group">
-        <label>Cinema / Platform</label>
-        <input type="text" id="editCinema" required>
-      </div>
-      <div class="input-group">
-        <label>Genre</label>
-        <input type="text" id="editGenre">
-      </div>
-      <div class="input-group">
-        <label>Poster URL</label>
-        <input type="url" id="editPoster">
-      </div>
-      <div class="input-group">
-        <label>Rating</label>
-        <div class="star-input" id="editStarInput">
-          <span class="star" data-value="1">★</span>
-          <span class="star" data-value="2">★</span>
-          <span class="star" data-value="3">★</span>
-          <span class="star" data-value="4">★</span>
-          <span class="star" data-value="5">★</span>
-        </div>
-      </div>
-      <div class="input-group">
-        <label>Review</label>
-        <textarea id="editReview"></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary">Save Changes 💾</button>
-    </form>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<footer>
-  <div class="container">
-    <p>Made with ❤️ by <span>Aman Mirza</span> • © 2024</p>
-  </div>
-</footer>
-
-<script>
-let films = JSON.parse(localStorage.getItem('amanFilmsAdvanced')) || [];
-let currentRating = 0;
-let editRating = 0;
-
-const form = document.getElementById('filmForm');
-const grid = document.getElementById('filmsGrid');
-const searchInput = document.getElementById('searchInput');
-const filterLang = document.getElementById('filterLang');
-const filterRating = document.getElementById('filterRating');
-const toast = document.getElementById('toast');
-
-function setupStars(container, setter) {
-  container.querySelectorAll('.star').forEach(star => {
-    star.addEventListener('click', () => {
-      setter(parseInt(star.dataset.value));
-      paintStars(container, parseInt(star.dataset.value));
-    });
-    star.addEventListener('mouseenter', () => {
-      const val = parseInt(star.dataset.value);
-      container.querySelectorAll('.star').forEach(s => {
-        s.style.color = parseInt(s.dataset.value) <= val ? '#f5b942' : '#33334a';
-      });
-    });
-  });
-  container.addEventListener('mouseleave', () => {
-    const active = container.querySelectorAll('.star.active').length;
-    paintStars(container, active);
-  });
-}
-
-function paintStars(container, rating) {
-  container.querySelectorAll('.star').forEach(s => {
-    s.classList.toggle('active', parseInt(s.dataset.value) <= rating);
-    s.style.color = parseInt(s.dataset.value) <= rating ? '#f5b942' : '#33334a';
-  });
-}
-
-setupStars(document.getElementById('starInput'), v => currentRating = v);
-setupStars(document.getElementById('editStarInput'), v => editRating = v);
-
-function save() {
-  localStorage.setItem('amanFilmsAdvanced', JSON.stringify(films));
-  updateFilters();
-  renderFilms();
-  updateStats();
-}
-
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const film = {
-    name: document.getElementById('filmName').value.trim(),
-    language: document.getElementById('filmLang').value.trim(),
-    cinema: document.getElementById('filmCinema').value.trim(),
-    genre: document.getElementById('filmGenre').value.trim(),
-    poster: document.getElementById('filmPoster').value.trim(),
-    review: document.getElementById('filmReview').value.trim(),
-    rating: currentRating,
-    date: new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })
-  };
-  if (!film.name || !film.language || !film.cinema) return;
-  films.unshift(film);
-  save();
-  form.reset();
-  currentRating = 0;
-  paintStars(document.getElementById('starInput'), 0);
-  showToast('✅ Film added!');
-  grid.scrollIntoView({ behavior:'smooth', block:'start' });
-});
-
-function deleteFilm(index) {
-  if (confirm('Delete this film?')) {
-    films.splice(index, 1);
-    save();
-    showToast('🗑️ Film deleted');
-  }
-}
-
-function openEditModal(index) {
-  const film = films[index];
-  document.getElementById('editIndex').value = index;
-  document.getElementById('editName').value = film.name;
-  document.getElementById('editLang').value = film.language;
-  document.getElementById('editCinema').value = film.cinema;
-  document.getElementById('editGenre').value = film.genre || '';
-  document.getElementById('editPoster').value = film.poster || '';
-  document.getElementById('editReview').value = film.review || '';
-  editRating = film.rating || 0;
-  paintStars(document.getElementById('editStarInput'), editRating);
-  document.getElementById('editModal').classList.add('active');
-}
-
-function closeEditModal() {
-  document.getElementById('editModal').classList.remove('active');
-}
-
-document.getElementById('editForm').addEventListener('submit', (e) => {
-  e.preventDefault();
-  const index = parseInt(document.getElementById('editIndex').value);
-  films[index] = {
-    ...films[index],
-    name: document.getElementById('editName').value.trim(),
-    language: document.getElementById('editLang').value.trim(),
-    cinema: document.getElementById('editCinema').value.trim(),
-    genre: document.getElementById('editGenre').value.trim(),
-    poster: document.getElementById('editPoster').value.trim(),
-    review: document.getElementById('editReview').value.trim(),
-    rating: editRating
-  };
-  save();
-  closeEditModal();
-  showToast('💾 Changes saved!');
-});
-
-function renderFilms() {
-  const search = searchInput.value.toLowerCase().trim();
-  const langFilter = filterLang.value;
-  const ratingFilter = filterRating.value ? parseInt(filterRating.value) : 0;
-
-  const filtered = films.filter(film => {
-    const matchSearch = !search ||
-      film.name.toLowerCase().includes(search) ||
-      film.language.toLowerCase().includes(search) ||
-      (film.genre && film.genre.toLowerCase().includes(search));
-    const matchLang = !langFilter || film.language === langFilter;
-    const matchRating = !ratingFilter || (film.rating || 0) >= ratingFilter;
-    return matchSearch && matchLang && matchRating;
-  });
-
-  grid.innerHTML = '';
-
-  if (filtered.length === 0) {
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">🎞️</div>
-        <h3>${films.length === 0 ? 'No films added yet' : 'No films match your search'}</h3>
-        <p>${films.length === 0 ? 'Start by adding your first movie above!' : 'Try different keywords.'}</p>
-      </div>
-    `;
-    document.getElementById('filmCount').textContent = '0 Films';
-    return;
-  }
-
-  filtered.forEach(film => {
-    const realIndex = films.indexOf(film);
-    const card = document.createElement('div');
-    card.className = 'film-card';
-    const posterStyle = film.poster ? `background-image:url('${escapeAttr(film.poster)}');` : '';
-    const posterContent = film.poster ? '' : '🎬';
-
-    card.innerHTML = `
-      <div class="film-poster" style="${posterStyle}">${posterContent}</div>
-      <div class="film-body">
-        <div class="film-title">${escapeHtml(film.name)}</div>
-        <div class="film-stars">${renderStars(film.rating || 0)}</div>
-        <div class="film-meta">
-          <span class="badge badge-lang">🌐 ${escapeHtml(film.language)}</span>
-          <span class="badge badge-cinema">📍 ${escapeHtml(film.cinema)}</span>
-          ${film.genre ? `<span class="badge badge-genre">${escapeHtml(film.genre)}</span>` : ''}
-        </div>
-        ${film.review ? `<div class="film-review">${escapeHtml(film.review)}</div>` : ''}
-        <div class="film-date">📅 ${film.date}</div>
-        <div class="film-actions">
-          <button class="action-btn edit" onclick="openEditModal(${realIndex})">✏️ Edit</button>
-          <button class="action-btn delete" onclick="deleteFilm(${realIndex})">🗑️ Delete</button>
-        </div>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-
-  document.getElementById('filmCount').textContent =
-    filtered.length + (filtered.length === 1 ? ' Film' : ' Films');
-}
-
-function renderStars(rating) {
-  let html = '';
-  for (let i = 1; i <= 5; i++) {
-    html += `<span class="${i <= rating ? 'filled' : 'empty'}">★</span>`;
-  }
-  return html;
-}
-
-function updateFilters() {
-  const langs = [...new Set(films.map(f => f.language))].sort();
-  const currentVal = filterLang.value;
-  filterLang.innerHTML = '<option value="">All Languages</option>' +
-    langs.map(l => `<option value="${escapeAttr(l)}">${escapeHtml(l)}</option>`).join('');
-  filterLang.value = currentVal;
-}
-
-function updateStats() {
-  document.getElementById('statTotal').textContent = films.length;
-  document.getElementById('headerCount').textContent = films.length;
-
-  const rated = films.filter(f => f.rating > 0);
-  const avg = rated.length
-    ? (rated.reduce((s, f) => s + f.rating, 0) / rated.length).toFixed(1)
-    : '0.0';
-  document.getElementById('statAvg').textContent = avg;
-
-  document.getElementById('statLangs').textContent = new Set(films.map(f => f.language)).size;
-
-  const top = [...rated].sort((a, b) => b.rating - a.rating)[0];
-  const topEl = document.getElementById('statTop');
-  if (top) {
-    topEl.textContent = top.name.length > 12 ? top.name.slice(0, 12) + '…' : top.name;
-    topEl.style.fontSize = '1.1rem';
-  } else {
-    topEl.textContent = '—';
-    topEl.style.fontSize = '1.8rem';
-  }
-}
-
-function showToast(msg) {
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(() => toast.classList.remove('show'), 2500);
-}
-
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-}
-
-function escapeAttr(text) {
-  return String(text).replace(/'/g, "\\'").replace(/"/g, '&quot;');
-}
-
-searchInput.addEventListener('input', renderFilms);
-filterLang.addEventListener('change', renderFilms);
-filterRating.addEventListener('change', renderFilms);
-document.getElementById('editModal').addEventListener('click', (e) => {
-  if (e.target.id === 'editModal') closeEditModal();
-});
-
-renderFilms();
-updateFilters();
-  <!DOCTYPE html>
-<html lang="en">
-<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Aman's Cinema | Film Collection</title>
+  <title>aman bhatt | Film Vault</title>
   <style>
     :root {
-      --bg: #0a0a0f;
-      --surface: #14141c;
-      --surface-2: #1a1a24;
-      --surface-3: #1d1d2a;
-      --border: #2a2a3b;
-      --text: #f1f1f5;
-      --muted: #8b8ba7;
-      --gold: #f5b942;
-      --red: #e50914;
-      --green: #22c55e;
+      --bg: #0b1020;
+      --bg-soft: #121a2d;
+      --panel: #161f35;
+      --panel-2: #1d2947;
+      --panel-3: #263356;
+      --border: rgba(255,255,255,0.08);
+      --text: #edf2ff;
+      --muted: #9aa9c7;
+      --primary: #ff4d6d;
+      --gold: #ffc857;
+      --green: #4ade80;
       --blue: #60a5fa;
       --purple: #a78bfa;
-      --shadow: rgba(0,0,0,0.45);
-      --input-bg: rgba(255,255,255,0.02);
-      --header-gradient: linear-gradient(135deg, #e50914, #f5b942);
+      --shadow: rgba(0,0,0,0.35);
+      --danger: #ff5f6d;
+      --header-gradient: linear-gradient(135deg, #ff4d6d 0%, #ff8f5a 30%, #ffc857 100%);
     }
 
     body.light {
-      --bg: #f5f5f7;
-      --surface: #ffffff;
-      --surface-2: #f0f1f5;
-      --surface-3: #e9ebf0;
-      --border: #dfe3ee;
-      --text: #111827;
-      --muted: #5a6478;
-      --gold: #d99600;
-      --red: #e50914;
+      --bg: #eef3ff;
+      --bg-soft: #f7f9ff;
+      --panel: #ffffff;
+      --panel-2: #f1f5ff;
+      --panel-3: #eaf0ff;
+      --border: rgba(33, 39, 58, 0.08);
+      --text: #141b2d;
+      --muted: #586884;
+      --primary: #e11d48;
+      --gold: #d19a00;
       --green: #16a34a;
       --blue: #2563eb;
       --purple: #7c3aed;
-      --shadow: rgba(15, 23, 42, 0.08);
-      --input-bg: #f8fafc;
-      --header-gradient: linear-gradient(135deg, #dc2626, #f59e0b);
+      --shadow: rgba(31,41,55,0.08);
+      --danger: #e11d48;
+      --header-gradient: linear-gradient(135deg, #e11d48 0%, #f97316 35%, #fbbf24 100%);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: "Inter", "Segoe UI", sans-serif;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
     body {
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
       transition: background 0.25s ease, color 0.25s ease;
-      position: relative;
+      min-height: 100vh;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      top: -300px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 900px;
-      height: 900px;
-      background: radial-gradient(circle, rgba(229,9,20,0.12) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
+    a { text-decoration: none; }
 
     .container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 0 24px;
-      position: relative;
-      z-index: 1;
+      padding: 0 22px;
     }
 
-    header {
-      padding: 28px 0 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(12px);
+      background: rgba(11, 16, 32, 0.72);
       border-bottom: 1px solid var(--border);
-      margin-bottom: 18px;
-      flex-wrap: wrap;
+    }
+
+    body.light .topbar {
+      background: rgba(238, 243, 255, 0.7);
+    }
+
+    .topbar-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 17px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 16px;
+      flex-wrap: wrap;
     }
 
-    .logo {
-      font-size: 1.3rem;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
       font-weight: 800;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      font-size: 1.2rem;
+      letter-spacing: 0.02em;
     }
 
-    .logo-icon {
-      width: 40px;
-      height: 40px;
+    .brand-mark {
+      width: 42px;
+      height: 42px;
       border-radius: 12px;
+      display: grid;
+      place-items: center;
       background: var(--header-gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.15rem;
-      box-shadow: 0 8px 28px rgba(229, 9, 20, 0.25);
+      box-shadow: 0 12px 24px rgba(255, 77, 109, 0.28);
+      font-size: 1.2rem;
     }
 
-    .logo-text {
+    .brand-name {
       background: var(--header-gradient);
       -webkit-background-clip: text;
       background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: transparent;
     }
 
-    .header-right {
+    .top-actions {
       display: flex;
       align-items: center;
       gap: 12px;
       flex-wrap: wrap;
     }
 
-    .stat-badge {
-      background: var(--surface);
+    .badge {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--panel);
       border: 1px solid var(--border);
       color: var(--muted);
-      padding: 7px 14px;
-      border-radius: 50px;
       font-size: 0.8rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 8px 22px var(--shadow);
+      font-weight: 700;
     }
 
-    .stat-badge strong {
+    .badge strong {
       color: var(--gold);
       font-weight: 800;
     }
 
-    .home-link {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: color 0.2s ease;
-    }
-
-    .home-link:hover { color: var(--text); }
-
-    .top-actions {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .icon-btn, .soft-btn {
+    .action-btn, .soft-btn, .icon-btn, .main-btn {
       border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
       border-radius: 12px;
+      background: var(--panel);
+      color: var(--text);
       cursor: pointer;
-      transition: all 0.2s ease;
-      font-family: inherit;
+      transition: 0.2s ease;
+      font: inherit;
     }
 
-    .icon-btn {
-      width: 42px;
-      height: 42px;
-      font-size: 1.05rem;
-    }
-
-    .soft-btn {
+    .soft-btn, .main-btn {
       padding: 10px 14px;
       font-size: 0.82rem;
       font-weight: 700;
     }
 
-    .icon-btn:hover, .soft-btn:hover {
+    .main-btn {
+      background: var(--header-gradient);
+      color: white;
+      border: none;
+      min-height: 46px;
+      box-shadow: 0 18px 32px rgba(255, 77, 109, 0.22);
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      font-size: 1rem;
+      display: grid;
+      place-items: center;
+    }
+
+    .action-btn:hover, .soft-btn:hover, .icon-btn:hover, .main-btn:hover {
       transform: translateY(-2px);
-      border-color: rgba(229,9,20,0.5);
-      box-shadow: 0 10px 24px var(--shadow);
+      box-shadow: 0 14px 30px var(--shadow);
     }
 
     .hero {
+      padding: 44px 0 28px;
       text-align: center;
-      padding: 18px 0 30px;
+      position: relative;
     }
 
-    .hero-badge {
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -60px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255,77,109,0.15), transparent 70%);
+      filter: blur(12px);
+      pointer-events: none;
+    }
+
+    .pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 7px 16px;
-      border-radius: 50px;
-      background: rgba(229,9,20,0.08);
-      border: 1px solid rgba(229,9,20,0.28);
-      font-size: 0.76rem;
-      color: var(--red);
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      margin-bottom: 18px;
+      padding: 8px 16px;
+      background: rgba(255, 77, 109, 0.08);
+      border: 1px solid rgba(255, 77, 109, 0.25);
+      color: var(--primary);
+      border-radius: 999px;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-    }
-
-    .hero h1 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
       font-weight: 800;
-      line-height: 1.15;
-      margin-bottom: 12px;
+      margin-bottom: 18px;
     }
 
-    .hero h1 span {
+    h1 {
+      font-size: clamp(2.2rem, 4vw, 4rem);
+      line-height: 1.08;
+      margin-bottom: 12px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    h1 span {
       background: var(--header-gradient);
       -webkit-background-clip: text;
       background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: transparent;
     }
 
-    .hero p {
+    .subtext {
       color: var(--muted);
-      max-width: 680px;
+      max-width: 640px;
       margin: 0 auto;
       font-size: 1rem;
     }
 
-    .stats-bar {
+    .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 16px;
-      margin: 10px 0 30px;
+      margin: 26px 0 30px;
     }
 
     .stat-card {
-      background: var(--surface);
+      background:linear-gradient(180deg, var(--panel), var(--panel-2));
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px 18px;
+      border-radius: 18px;
+      padding: 22px 18px;
       text-align: center;
-      transition: all 0.25s ease;
-      box-shadow: 0 8px 26px var(--shadow);
+      box-shadow: 0 12px 28px var(--shadow);
     }
 
-    .stat-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(245,185,66,0.36);
-    }
-
-    .stat-value {
-      font-size: clamp(1.6rem, 3vw, 2.1rem);
-      font-weight: 800;
+    .stat-card .value {
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 900;
       background: var(--header-gradient);
       -webkit-background-clip: text;
       background-clip: text;
-      -webkit-text-fill-color: transparent;
-      line-height: 1.2;
+      color: transparent;
     }
 
-    .stat-label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
+    .stat-card .label {
       margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 700;
     }
 
-    .add-section {
-      background: var(--surface);
+    .add-panel {
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px 24px;
+      border-radius: 24px;
+      padding: 26px 22px;
+      box-shadow: 0 20px 42px var(--shadow);
       margin-bottom: 30px;
       position: relative;
-      overflow: hidden;
-      box-shadow: 0 16px 40px var(--shadow);
     }
 
-    .add-section::before {
+    .add-panel::before {
       content: "";
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 3px;
+      height: 4px;
+      border-radius: 24px 24px 0 0;
       background: var(--header-gradient);
     }
 
-    .form-title {
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .panel-title {
       font-size: 1.2rem;
       font-weight: 800;
-      margin-bottom: 22px;
     }
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 16px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
 
     .form-grid.full { grid-template-columns: 1fr; }
 
-    .input-group {
+    .field {
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 8px;
     }
 
-    .input-group label {
+    .field label {
       font-size: 0.72rem;
       color: var(--muted);
-      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
+      font-weight: 800;
     }
 
-    .input-group input,
-    .input-group textarea,
-    .input-group select {
+    .field input,
+    .field textarea,
+    .field select {
       width: 100%;
-      padding: 12px 14px;
-      border-radius: 12px;
-      background: var(--input-bg);
       border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
       color: var(--text);
-      font-size: 0.95rem;
+      font: inherit;
+      padding: 12px 14px;
       outline: none;
-      transition: all 0.2s ease;
-      font-family: inherit;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .input-group textarea {
+    body.light .field input,
+    body.light .field textarea,
+    body.light .field select {
+      background: #f8faff;
+    }
+
+    .field input::placeholder,
+    .field textarea::placeholder {
+      color: #7582a3;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: rgba(255, 77, 109, 0.7);
+      box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.12);
+    }
+
+    textarea {
       resize: vertical;
-      min-height: 85px;
+      min-height: 82px;
     }
 
-    .input-group input::placeholder,
-    .input-group textarea::placeholder { color: #6a7283; }
-
-    .input-group input:focus,
-    .input-group textarea:focus,
-    .input-group select:focus {
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px rgba(229,9,20,0.12);
-    }
-
-    .star-input {
+    .star-wrap {
       display: flex;
-      gap: 6px;
-      padding: 8px 0;
-      min-height: 40px;
       align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      padding: 4px 2px;
     }
 
     .star {
       font-size: 1.8rem;
+      color: #4a5267;
       cursor: pointer;
-      color: #434b5f;
-      transition: transform 0.15s ease, color 0.18s ease;
       user-select: none;
+      transition: transform 0.15s ease, color 0.15s ease;
       line-height: 1;
-      text-shadow: 0 0 10px rgba(245,185,66,0.12);
     }
 
-    .star:hover, .star.active {
+    .star.active {
       color: var(--gold);
       transform: scale(1.08);
     }
 
-    .poster-upload-wrap {
+    .star:hover {
+      color: var(--gold);
+    }
+
+    .upload-row {
       display: flex;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
-    .poster-upload-wrap .soft-btn {
-      padding: 10px 12px;
-      min-width: 130px;
+    .hidden {
+      display: none;
     }
 
-    .btn {
-      padding: 13px 22px;
-      border-radius: 12px;
-      border: none;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.25s ease;
-      font-family: inherit;
-    }
-
-    .btn-primary {
-      width: 100%;
-      background: var(--header-gradient);
-      color: white;
-      box-shadow: 0 18px 32px rgba(229,9,20,0.22);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 30px rgba(229,9,20,0.28);
-    }
-
-    .btn-secondary {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-    }
-
-    .controls {
+    .toolbar {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr 1fr;
       gap: 12px;
-      margin-bottom: 26px;
-    }
-
-    @media (max-width: 850px) {
-      .controls {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 700px) {
-      .controls {
-        grid-template-columns: 1fr;
-      }
+      margin-bottom: 22px;
     }
 
     .search-box {
@@ -1079,207 +409,192 @@ updateFilters();
 
     .search-box input {
       width: 100%;
-      padding: 13px 16px 13px 44px;
+      padding: 13px 16px 13px 42px;
       border-radius: 12px;
-      background: var(--surface);
+      background: var(--panel);
       border: 1px solid var(--border);
       color: var(--text);
-      font-size: 0.95rem;
+      font: inherit;
       outline: none;
     }
 
-    .search-box input:focus {
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px rgba(229,9,20,0.1);
-    }
-
     .search-box::before {
-      content: "🔍";
+      content: "🔎";
       position: absolute;
       left: 14px;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 1rem;
-      opacity: 0.75;
+      font-size: 0.95rem;
+      opacity: 0.8;
     }
 
     .filter-select {
       width: 100%;
-      padding: 13px 16px;
-      border-radius: 12px;
-      background: var(--surface);
       border: 1px solid var(--border);
+      background: var(--panel);
       color: var(--text);
-      font-size: 0.9rem;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font: inherit;
       outline: none;
-      cursor: pointer;
-      font-family: inherit;
     }
 
-    .films-header {
+    .collection-header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 12px 0 18px;
       flex-wrap: wrap;
-      gap: 12px;
     }
 
-    .films-header h2 {
-      font-size: 1.3rem;
+    .collection-title {
+      font-size: 1.28rem;
       font-weight: 800;
     }
 
-    .films-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 22px;
-      margin-bottom: 70px;
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .film-card {
-      background: var(--surface);
+    .movie-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 20px;
+      padding-bottom: 60px;
+    }
+
+    .movie-card {
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
       border: 1px solid var(--border);
-      border-radius: 18px;
+      border-radius: 22px;
       overflow: hidden;
-      position: relative;
-      transition: all 0.3s ease;
-      animation: fadeIn 0.4s ease;
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      box-shadow: 0 18px 36px var(--shadow);
       display: flex;
       flex-direction: column;
-      box-shadow: 0 12px 30px var(--shadow);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
+    .movie-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 77, 109, 0.4);
     }
 
-    .film-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(229,9,20,0.38);
-      box-shadow: 0 18px 44px var(--shadow);
-    }
-
-    .film-poster {
-      width: 100%;
-      height: 260px;
-      background: linear-gradient(135deg, var(--surface-3), #0f0f18);
-      background-size: cover;
-      background-position: center;
+    .movie-poster {
+      height: 270px;
       position: relative;
+      background: linear-gradient(135deg, var(--panel-3), #0e1425);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 3rem;
-      color: var(--text);
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
     }
 
-    .film-poster::after {
+    .movie-poster::after {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, var(--surface) 0%, transparent 60%);
+      background: linear-gradient(to top, rgba(11,16,32,0.9), transparent 60%);
     }
 
     .poster-fallback {
-      position: absolute;
-      z-index: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 100%;
       font-size: 3rem;
+      position: relative;
+      z-index: 1;
       opacity: 0.9;
     }
 
-    .film-body {
-      padding: 18px 18px 16px;
-      flex: 1;
+    .movie-content {
+      padding: 17px 16px 16px;
       display: flex;
       flex-direction: column;
+      flex: 1;
     }
 
-    .film-topline {
+    .movie-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .film-title {
+    .movie-name {
       font-size: 1.15rem;
       font-weight: 800;
-      line-height: 1.3;
+      line-height: 1.4;
       flex: 1;
       min-width: 0;
     }
 
-    .favorite-toggle {
+    .fav-btn {
       border: none;
       background: transparent;
-      color: var(--muted);
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       cursor: pointer;
-      transition: all 0.2s ease;
-      user-select: none;
+      color: var(--muted);
+      transition: color 0.2s ease, transform 0.2s ease;
     }
 
-    .favorite-toggle.active {
+    .fav-btn.active {
       color: var(--gold);
-      transform: scale(1.15);
+      transform: scale(1.1);
     }
 
-    .film-stars {
+    .stars {
       display: flex;
       gap: 2px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       font-size: 0.95rem;
     }
 
-    .film-stars .filled { color: var(--gold); }
-    .film-stars .empty { color: #3c4353; }
+    .stars .filled { color: var(--gold); }
+    .stars .empty { color: #4b5772; }
 
-    .film-meta {
+    .meta {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
-    .badge {
+    .tag {
       display: inline-block;
-      padding: 4px 10px;
+      padding: 4px 9px;
+      font-size: 0.7rem;
+      font-weight: 800;
       border-radius: 8px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      line-height: 1.5;
+      letter-spacing: 0.02em;
+      border: 1px solid transparent;
     }
 
-    .badge-lang {
-      background: rgba(124, 92, 255, 0.12);
-      border: 1px solid rgba(124, 92, 255, 0.32);
+    .tag.lang {
+      background: rgba(167, 139, 250, 0.12);
       color: var(--purple);
+      border-color: rgba(167, 139, 250, 0.25);
     }
 
-    .badge-cinema {
-      background: rgba(245,185,66,0.12);
-      border: 1px solid rgba(245,185,66,0.28);
+    .tag.cinema {
+      background: rgba(255, 200, 87, 0.12);
       color: var(--gold);
+      border-color: rgba(255,200,87,0.25);
     }
 
-    .badge-genre {
-      background: rgba(34,197,94,0.12);
-      border: 1px solid rgba(34,197,94,0.32);
+    .tag.genre {
+      background: rgba(74,222,128,0.12);
       color: var(--green);
+      border-color: rgba(74,222,128,0.25);
     }
 
-    .film-review {
-      font-size: 0.84rem;
+    .review {
       color: var(--muted);
-      margin-bottom: 12px;
+      font-size: 0.83rem;
+      margin-bottom: 14px;
       flex: 1;
       display: -webkit-box;
       -webkit-line-clamp: 3;
@@ -1287,155 +602,145 @@ updateFilters();
       overflow: hidden;
     }
 
-    .film-date {
+    .movie-date {
+      color: #7582a3;
       font-size: 0.72rem;
-      color: #5b6271;
-      margin-top: 6px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
-    .film-actions {
+    .card-actions {
       display: flex;
       gap: 8px;
-      margin-top: 10px;
-      padding-top: 12px;
+      margin-top: auto;
+      padding-top: 10px;
       border-top: 1px solid var(--border);
     }
 
-    .action-btn {
+    .mini-btn {
       flex: 1;
-      padding: 8px 10px;
-      border-radius: 10px;
       border: 1px solid var(--border);
       background: transparent;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font: inherit;
       color: var(--muted);
-      font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s ease;
-      font-family: inherit;
+      transition: 0.2s ease;
     }
 
-    .action-btn:hover { background: var(--surface-2); color: var(--text); }
-    .action-btn.delete:hover { color: var(--red); border-color: rgba(229,9,20,0.35); }
-    .action-btn.edit:hover { color: var(--gold); border-color: rgba(245,185,66,0.4); }
+    .mini-btn:hover {
+      background: rgba(255,255,255,0.02);
+      color: var(--text);
+    }
 
-    .empty-state {
+    .mini-btn.delete:hover {
+      color: var(--danger);
+      border-color: rgba(255,95,109,0.35);
+    }
+
+    .mini-btn.edit:hover {
+      color: var(--gold);
+      border-color: rgba(255,200,87,0.35);
+    }
+
+    .empty {
       text-align: center;
-      padding: 70px 20px;
-      color: var(--muted);
-      grid-column: 1 / -1;
-      background: var(--surface);
+      padding: 72px 20px;
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
       border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: 0 12px 28px var(--shadow);
+      border-radius: 22px;
+      grid-column: 1 / -1;
+      box-shadow: 0 12px 26px var(--shadow);
     }
 
     .empty-icon {
       font-size: 3.5rem;
-      margin-bottom: 16px;
-      opacity: 0.62;
+      opacity: 0.75;
+      margin-bottom: 10px;
     }
 
-    .empty-state h3 {
-      font-size: 1.2rem;
+    .empty h3 {
+      font-size: 1.3rem;
       margin-bottom: 8px;
-      color: var(--text);
+    }
+
+    .empty p {
+      color: var(--muted);
     }
 
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.82);
-      backdrop-filter: blur(8px);
+      background: rgba(10, 12, 18, 0.72);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
-      padding: 18px;
+      z-index: 90;
+      padding: 20px;
+      backdrop-filter: blur(6px);
     }
 
-    .modal-overlay.active { display: flex; }
+    .modal-overlay.active {
+      display: flex;
+    }
 
     .modal {
-      background: var(--surface);
+      width: min(540px, 100%);
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px 20px 18px;
-      max-width: 520px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      position: relative;
+      border-radius: 22px;
       box-shadow: 0 18px 46px rgba(0,0,0,0.45);
-    }
-
-    .modal h2 {
-      font-size: 1.38rem;
-      margin-bottom: 18px;
-      padding-right: 32px;
-    }
-
-    .modal .input-group {
-      margin-bottom: 14px;
+      padding: 26px 20px 18px;
+      position: relative;
     }
 
     .modal-close {
       position: absolute;
-      top: 14px;
       right: 14px;
-      background: transparent;
+      top: 14px;
+      width: 32px;
+      height: 32px;
       border: none;
+      border-radius: 10px;
+      background: transparent;
       color: var(--muted);
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       cursor: pointer;
-      border-radius: 8px;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
     }
 
     .modal-close:hover {
-      color: var(--red);
-      background: rgba(229,9,20,0.08);
+      background: rgba(255,255,255,0.03);
+      color: var(--danger);
     }
 
-    footer {
-      padding: 32px 0 40px;
-      text-align: center;
-      border-top: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 0.85rem;
+    .modal h2 {
+      font-size: 1.4rem;
+      margin-bottom: 18px;
+      padding-right: 24px;
     }
 
-    footer span {
-      background: var(--header-gradient);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: 800;
+    .modal .field {
+      margin-bottom: 14px;
     }
 
     .toast {
       position: fixed;
-      bottom: 28px;
       left: 50%;
-      transform: translateX(-50%) translateY(90px);
-      background: var(--surface);
-      border: 1px solid var(--green);
-      padding: 14px 22px;
-      border-radius: 12px;
+      bottom: 26px;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--panel);
+      border: 1px solid rgba(74,222,128,0.45);
       color: var(--text);
+      padding: 12px 18px;
+      border-radius: 12px;
       font-size: 0.9rem;
       font-weight: 700;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.45);
-      z-index: 2000;
+      box-shadow: 0 14px 30px rgba(0,0,0,0.28);
       opacity: 0;
       transition: all 0.25s ease;
-      min-width: 140px;
+      z-index: 100;
+      min-width: 150px;
       text-align: center;
     }
 
@@ -1444,114 +749,112 @@ updateFilters();
       opacity: 1;
     }
 
-    .hidden-input {
-      display: none;
+    @media (max-width: 900px) {
+      .toolbar {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
-    @media (max-width: 580px) {
-      .container {
-        padding: 0 16px;
-      }
-
-      .add-section {
-        padding: 22px 16px;
-      }
-
-      .films-grid {
+    @media (max-width: 700px) {
+      .toolbar {
         grid-template-columns: 1fr;
       }
 
-      .stat-card {
-        padding: 18px 12px;
+      .collection-header {
+        align-items: flex-start;
       }
     }
   </style>
 </head>
 <body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">🎬</div>
+        <div class="brand-name">Aman’s Cinema</div>
+      </div>
+
+      <div class="top-actions">
+        <div class="badge">🎞️ <strong id="headerCount">0</strong> Films</div>
+        <button id="themeToggle" class="icon-btn" type="button" aria-label="Toggle theme">🌙</button>
+        <button id="installBtn" class="soft-btn" type="button" style="display:none;">📲 Install</button>
+        <a href="https://amanmirza.github.io" class="soft-btn" style="display:inline-flex; align-items:center; justify-content:center;">← Home</a>
+      </div>
+    </div>
+  </header>
+
   <div class="container">
-    <header>
-      <div class="logo">
-        <div class="logo-icon">🎬</div>
-        <div class="logo-text">Aman's Cinema</div>
-      </div>
-
-      <div class="header-right">
-        <div class="stat-badge">🎞️ <strong id="headerCount">0</strong> Films</div>
-
-        <div class="top-actions">
-          <button id="themeToggle" class="icon-btn" aria-label="Toggle theme">🌙</button>
-          <button id="installBtn" class="soft-btn" style="display:none;">📲 Install</button>
-        </div>
-
-        <a href="https://amanmirza.github.io" class="home-link">← Home</a>
-      </div>
-    </header>
-
     <section class="hero">
-      <div class="hero-badge">🎥 My Film Diary</div>
+      <div class="pill">🎥 My Film Diary</div>
       <h1>Films I've <span>Watched</span></h1>
-      <p>Track every movie you watch — with ratings, reviews, where you saw it, and your favorites.</p>
+      <p class="subtext">Track every movie with your rating, review, favorite status, and cinema source — all in one lovely vault.</p>
     </section>
 
-    <div class="stats-bar">
+    <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-value" id="statTotal">0</div>
-        <div class="stat-label">Total Films</div>
+        <div class="value" id="statTotal">0</div>
+        <div class="label">Total Films</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="statAvg">0.0</div>
-        <div class="stat-label">Avg Rating</div>
+        <div class="value" id="statAvg">0.0</div>
+        <div class="label">Avg Rating</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="statLangs">0</div>
-        <div class="stat-label">Languages</div>
+        <div class="value" id="statLangs">0</div>
+        <div class="label">Languages</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="statTop">—</div>
-        <div class="stat-label">Top Rated</div>
+        <div class="value" id="statFav">0</div>
+        <div class="label">Favorites</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value" id="statFavorite">0</div>
-        <div class="stat-label">Favorites</div>
+        <div class="value" id="statTop">—</div>
+        <div class="label">Top Rated</div>
       </div>
     </div>
 
-    <section class="add-section">
-      <div class="form-title">➕ Add a New Film</div>
+    <section class="add-panel">
+      <div class="panel-head">
+        <div class="panel-title">➕ Add a New Film</div>
+      </div>
+
       <form id="filmForm">
         <div class="form-grid">
-          <div class="input-group">
+          <div class="field">
             <label>Film Name *</label>
             <input type="text" id="filmName" placeholder="e.g. Interstellar" required />
           </div>
-          <div class="input-group">
+
+          <div class="field">
             <label>Language *</label>
             <input type="text" id="filmLang" placeholder="e.g. English" required />
           </div>
-          <div class="input-group">
+
+          <div class="field">
             <label>Cinema / Platform *</label>
-            <input type="text" id="filmCinema" placeholder="e.g. PVR / Netflix" required />
+            <input type="text" id="filmCinema" placeholder="e.g. Netflix, PVR, IMDB" required />
           </div>
-          <div class="input-group">
+
+          <div class="field">
             <label>Genre</label>
             <input type="text" id="filmGenre" placeholder="e.g. Sci-Fi" />
           </div>
         </div>
 
         <div class="form-grid">
-          <div class="input-group">
-            <label>Poster URL (optional)</label>
-            <input type="url" id="filmPoster" placeholder="https://...jpg" />
-            <div class="poster-upload-wrap">
-              <button type="button" class="soft-btn" id="uploadPosterBtn">📷 Upload Poster</button>
+          <div class="field">
+            <label>Poster URL</label>
+            <input type="url" id="filmPoster" placeholder="https://..." />
+            <div class="upload-row">
+              <button type="button" class="soft-btn" id="posterPicker">📷 Upload</button>
               <span id="posterStatus" style="color: var(--muted); font-size: 0.75rem;"></span>
             </div>
-            <input type="file" id="posterUploadInput" class="hidden-input" accept="image/*" />
+            <input type="file" id="posterInput" class="hidden" accept="image/*" />
           </div>
 
-          <div class="input-group">
+          <div class="field">
             <label>Your Rating</label>
-            <div class="star-input" id="starInput">
+            <div class="star-wrap" id="starInput">
               <span class="star" data-value="1">★</span>
               <span class="star" data-value="2">★</span>
               <span class="star" data-value="3">★</span>
@@ -1562,17 +865,17 @@ updateFilters();
         </div>
 
         <div class="form-grid full">
-          <div class="input-group">
+          <div class="field">
             <label>Review / Notes</label>
             <textarea id="filmReview" placeholder="What did you think about this film?"></textarea>
           </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Add Film 🎬</button>
+        <button class="main-btn" type="submit" style="width:100%;">Add Film 🎬</button>
       </form>
     </section>
 
-    <div class="controls">
+    <div class="toolbar">
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="Search films..." />
       </div>
@@ -1583,67 +886,76 @@ updateFilters();
 
       <select class="filter-select" id="filterRating">
         <option value="">All Ratings</option>
-        <option value="5">⭐⭐⭐⭐⭐ (5 only)</option>
-        <option value="4">⭐⭐⭐⭐ (4+)</option>
-        <option value="3">⭐⭐⭐ (3+)</option>
+        <option value="5">⭐⭐⭐⭐⭐ 5</option>
+        <option value="4">⭐⭐⭐⭐ 4+</option>
+        <option value="3">⭐⭐⭐ 3+</option>
       </select>
 
       <select class="filter-select" id="sortSelect">
-        <option value="newest">Sort: Newest</option>
-        <option value="oldest">Sort: Oldest</option>
-        <option value="rating-desc">Sort: Rating ↓</option>
-        <option value="rating-asc">Sort: Rating ↑</option>
-        <option value="name-asc">Sort: Name A–Z</option>
-        <option value="name-desc">Sort: Name Z–A</option>
-        <option value="favorite">Sort: Favorites First</option>
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+        <option value="rating-desc">Rating ↓</option>
+        <option value="rating-asc">Rating ↑</option>
+        <option value="name-asc">Name A–Z</option>
+        <option value="name-desc">Name Z–A</option>
+        <option value="favorite">Favorites First</option>
       </select>
     </div>
 
-    <div class="films-header">
-      <h2>📽️ My Collection</h2>
-      <div class="top-actions">
-        <button class="soft-btn" id="exportJsonBtn">Export JSON</button>
-        <button class="soft-btn" id="exportCsvBtn">Export CSV</button>
-        <button class="soft-btn" id="importBtn">Import JSON</button>
-        <button class="soft-btn" id="clearBtn" style="border-color: rgba(229,9,20,0.4); color: var(--red);">Clear All</button>
+    <div class="collection-header">
+      <div class="collection-title">📽️ My Collection</div>
+
+      <div class="header-actions">
+        <button class="soft-btn" id="exportJsonBtn" type="button">Export JSON</button>
+        <button class="soft-btn" id="exportCsvBtn" type="button">Export CSV</button>
+        <button class="soft-btn" id="importJsonBtn" type="button">Import JSON</button>
+        <button class="soft-btn" id="clearBtn" type="button" style="color: var(--danger); border-color: rgba(255,95,109,0.4);">Clear All</button>
       </div>
-      <div class="stat-badge" id="filmCount">0 Films</div>
+
+      <div class="badge" id="filmCount">0 Films</div>
     </div>
 
-    <input type="file" id="importFileInput" class="hidden-input" accept="application/json" />
+    <input type="file" id="importFile" class="hidden" accept="application/json" />
 
-    <div class="films-grid" id="filmsGrid"></div>
+    <div class="movie-grid" id="moviesGrid"></div>
   </div>
 
-  <div class="modal-overlay" id="editModal">
+  <div id="editModal" class="modal-overlay">
     <div class="modal">
       <button class="modal-close" type="button" onclick="closeEditModal()">✕</button>
       <h2>✏️ Edit Film</h2>
+
       <form id="editForm">
         <input type="hidden" id="editIndex" />
-        <div class="input-group">
+
+        <div class="field">
           <label>Film Name</label>
           <input type="text" id="editName" required />
         </div>
-        <div class="input-group">
+
+        <div class="field">
           <label>Language</label>
           <input type="text" id="editLang" required />
         </div>
-        <div class="input-group">
+
+        <div class="field">
           <label>Cinema / Platform</label>
           <input type="text" id="editCinema" required />
         </div>
-        <div class="input-group">
+
+        <div class="field">
           <label>Genre</label>
           <input type="text" id="editGenre" />
         </div>
-        <div class="input-group">
+
+        <div class="field">
           <label>Poster URL</label>
           <input type="url" id="editPoster" />
         </div>
-        <div class="input-group">
+
+        <div class="field">
           <label>Rating</label>
-          <div class="star-input" id="editStarInput">
+          <div class="star-wrap" id="editStarInput">
             <span class="star" data-value="1">★</span>
             <span class="star" data-value="2">★</span>
             <span class="star" data-value="3">★</span>
@@ -1651,48 +963,40 @@ updateFilters();
             <span class="star" data-value="5">★</span>
           </div>
         </div>
-        <div class="input-group">
+
+        <div class="field">
           <label>Review</label>
           <textarea id="editReview"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Save Changes 💾</button>
+
+        <button type="submit" class="main-btn" style="width:100%;">Save Changes 💾</button>
       </form>
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
-
-  <footer>
-    <div class="container">
-      <p>Made with ❤️ by <span>Aman Mirza</span> • © 2024</p>
-    </div>
-  </footer>
+  <div id="toast" class="toast"></div>
 
   <script>
-    const STORAGE_KEY = "amanFilmsAdvanced";
+    const STORAGE_KEY = "amanCinemaFilmVault";
     const THEME_KEY = "amanCinemaTheme";
-
     let films = loadFilms();
     let currentRating = 0;
     let editRating = 0;
     let deferredPrompt = null;
 
     const form = document.getElementById("filmForm");
-    const grid = document.getElementById("filmsGrid");
+    const moviesGrid = document.getElementById("moviesGrid");
     const searchInput = document.getElementById("searchInput");
     const filterLang = document.getElementById("filterLang");
     const filterRating = document.getElementById("filterRating");
     const sortSelect = document.getElementById("sortSelect");
     const toast = document.getElementById("toast");
-    const themeToggle = document.getElementById("themeToggle");
-    const installBtn = document.getElementById("installBtn");
 
     function loadFilms() {
       try {
-        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        return Array.isArray(saved) ? saved : [];
-      } catch (error) {
-        console.error("Error loading films:", error);
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        return Array.isArray(data) ? data : [];
+      } catch {
         return [];
       }
     }
@@ -1706,53 +1010,51 @@ updateFilters();
 
     function applyTheme(theme = localStorage.getItem(THEME_KEY) || "dark") {
       document.body.classList.toggle("light", theme === "light");
-      const icon = theme === "dark" ? "🌙" : "☀️";
-      themeToggle.textContent = icon;
+      document.getElementById("themeToggle").textContent = theme === "dark" ? "🌙" : "☀️";
       localStorage.setItem(THEME_KEY, theme);
     }
-
-    themeToggle.addEventListener("click", () => {
-      const isLight = document.body.classList.contains("light");
-      applyTheme(isLight ? "dark" : "light");
-    });
-
     applyTheme();
 
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      const next = document.body.classList.contains("light") ? "dark" : "light";
+      applyTheme(next);
+    });
+
     function setupStars(container, setter) {
-      container.querySelectorAll(".star").forEach(star => {
+      const stars = container.querySelectorAll(".star");
+      stars.forEach(star => {
         star.addEventListener("click", () => {
-          const val = parseInt(star.dataset.value, 10);
-          setter(val);
-          paintStars(container, val);
+          const value = Number(star.dataset.value);
+          setter(value);
+          paintStars(container, value);
         });
 
         star.addEventListener("mouseenter", () => {
-          const val = parseInt(star.dataset.value, 10);
-          container.querySelectorAll(".star").forEach(s => {
-            const starVal = parseInt(s.dataset.value, 10);
-            s.style.color = starVal <= val ? "#f5b942" : "#434b5f";
+          const value = Number(star.dataset.value);
+          stars.forEach(s => {
+            s.style.color = Number(s.dataset.value) <= value ? "#ffc857" : "#4b5772";
           });
         });
       });
 
       container.addEventListener("mouseleave", () => {
-        const activeValue = Number(container.dataset.active || 0);
-        paintStars(container, activeValue);
+        const active = Number(container.dataset.active || 0);
+        paintStars(container, active);
       });
     }
 
     function paintStars(container, rating) {
       container.dataset.active = String(rating || 0);
-      container.querySelectorAll(".star").forEach(s => {
-        const val = parseInt(s.dataset.value, 10);
-        const isActive = val <= rating;
-        s.classList.toggle("active", isActive);
-        s.style.color = isActive ? "#f5b942" : "#434b5f";
+      container.querySelectorAll(".star").forEach(star => {
+        const value = Number(star.dataset.value);
+        const active = value <= rating;
+        star.classList.toggle("active", active);
+        star.style.color = active ? "#ffc857" : "#4b5772";
       });
     }
 
-    setupStars(document.getElementById("starInput"), v => currentRating = v);
-    setupStars(document.getElementById("editStarInput"), v => editRating = v);
+    setupStars(document.getElementById("starInput"), value => currentRating = value);
+    setupStars(document.getElementById("editStarInput"), value => editRating = value);
 
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -1768,7 +1070,9 @@ updateFilters();
         rating: currentRating,
         favorite: false,
         date: new Date().toLocaleDateString("en-IN", {
-          day: "numeric", month: "short", year: "numeric"
+          day: "numeric",
+          month: "short",
+          year: "numeric"
         }),
         createdAt: new Date().toISOString()
       };
@@ -1782,7 +1086,7 @@ updateFilters();
       paintStars(document.getElementById("starInput"), 0);
       document.getElementById("posterStatus").textContent = "";
       showToast("✅ Film added!");
-      grid.scrollIntoView({ behavior: "smooth", block: "start" });
+      document.getElementById("moviesGrid").scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
     function deleteFilm(index) {
@@ -1821,9 +1125,9 @@ updateFilters();
 
     document.getElementById("editForm").addEventListener("submit", (e) => {
       e.preventDefault();
-      const index = parseInt(document.getElementById("editIndex").value, 10);
 
-      if (Number.isNaN(index) || !films[index]) return;
+      const index = Number(document.getElementById("editIndex").value);
+      if (!Number.isInteger(index) || !films[index]) return;
 
       films[index] = {
         ...films[index],
@@ -1841,24 +1145,22 @@ updateFilters();
       showToast("💾 Changes saved!");
     });
 
-    function getFilteredAndSortedFilms() {
+    function getFilteredFilms() {
       const search = searchInput.value.toLowerCase().trim();
-      const langFilter = filterLang.value;
-      const ratingFilter = filterRating.value ? parseInt(filterRating.value, 10) : 0;
+      const lang = filterLang.value;
+      const ratingMin = filterRating.value ? Number(filterRating.value) : 0;
       const sortValue = sortSelect.value;
 
       let filtered = films.filter(film => {
-        const name = (film.name || "").toLowerCase();
-        const language = (film.language || "").toLowerCase();
-        const genre = (film.genre || "").toLowerCase();
-        const matchSearch = !search ||
-          name.includes(search) ||
-          language.includes(search) ||
-          genre.includes(search) ||
+        const matchSearch =
+          !search ||
+          (film.name || "").toLowerCase().includes(search) ||
+          (film.language || "").toLowerCase().includes(search) ||
+          (film.genre || "").toLowerCase().includes(search) ||
           (film.cinema || "").toLowerCase().includes(search);
 
-        const matchLang = !langFilter || film.language === langFilter;
-        const matchRating = !ratingFilter || (film.rating || 0) >= ratingFilter;
+        const matchLang = !lang || film.language === lang;
+        const matchRating = !ratingMin || (film.rating || 0) >= ratingMin;
         return matchSearch && matchLang && matchRating;
       });
 
@@ -1886,16 +1188,15 @@ updateFilters();
     }
 
     function renderFilms() {
-      const filtered = getFilteredAndSortedFilms();
+      const filtered = getFilteredFilms();
+      moviesGrid.innerHTML = "";
 
-      grid.innerHTML = "";
-
-      if (filtered.length === 0) {
-        grid.innerHTML = `
-          <div class="empty-state">
+      if (!filtered.length) {
+        moviesGrid.innerHTML = `
+          <div class="empty">
             <div class="empty-icon">🎞️</div>
-            <h3>${films.length === 0 ? "No films added yet" : "No films match your search"}</h3>
-            <p>${films.length === 0 ? "Start by adding your first movie above!" : "Try different keywords, rating filters or language filters."}</p>
+            <h3>${films.length ? "No films match your filters" : "No films added yet"}</h3>
+            <p>${films.length ? "Try different search or filter terms." : "Start by adding your first movie above."}</p>
           </div>
         `;
         document.getElementById("filmCount").textContent = "0 Films";
@@ -1905,65 +1206,63 @@ updateFilters();
       filtered.forEach(film => {
         const realIndex = films.findIndex(item => item.id === film.id);
         const posterStyle = film.poster ? `background-image:url('${escapeAttr(film.poster)}');` : "";
-        const posterContent = film.poster ? "" : "<div class='poster-fallback'>🎬</div>";
+        const fallback = film.poster ? "" : "<div class='poster-fallback'>🎬</div>";
 
         const card = document.createElement("div");
-        card.className = "film-card";
-
+        card.className = "movie-card";
         card.innerHTML = `
-          <div class="film-poster" style="${posterStyle}">
-            ${posterContent}
+          <div class="movie-poster" style="${posterStyle}">
+            ${fallback}
           </div>
-          <div class="film-body">
-            <div class="film-topline">
-              <div class="film-title">${escapeHtml(film.name)}</div>
-              <button type="button" class="favorite-toggle ${film.favorite ? "active" : ""}" data-index="${realIndex}" aria-label="Toggle favorite">
+
+          <div class="movie-content">
+            <div class="movie-top">
+              <div class="movie-name">${escapeHtml(film.name)}</div>
+              <button class="fav-btn ${film.favorite ? "active" : ""}" type="button" data-index="${realIndex}" aria-label="Toggle favorite">
                 ${film.favorite ? "★" : "☆"}
               </button>
             </div>
 
-            <div class="film-stars">${renderStars(film.rating || 0)}</div>
+            <div class="stars">${renderStars(film.rating || 0)}</div>
 
-            <div class="film-meta">
-              <span class="badge badge-lang">🌐 ${escapeHtml(film.language)}</span>
-              <span class="badge badge-cinema">📍 ${escapeHtml(film.cinema)}</span>
-              ${film.genre ? `<span class="badge badge-genre">${escapeHtml(film.genre)}</span>` : ""}
+            <div class="meta">
+              <span class="tag lang">🌐 ${escapeHtml(film.language)}</span>
+              <span class="tag cinema">📍 ${escapeHtml(film.cinema)}</span>
+              ${film.genre ? `<span class="tag genre">${escapeHtml(film.genre)}</span>` : ""}
             </div>
 
-            ${film.review ? `<div class="film-review">${escapeHtml(film.review)}</div>` : ""}
+            ${film.review ? `<div class="review">${escapeHtml(film.review)}</div>` : ""}
+            <div class="movie-date">📅 ${escapeHtml(film.date)}</div>
 
-            <div class="film-date">📅 ${film.date}</div>
-
-            <div class="film-actions">
-              <button class="action-btn edit" type="button" data-index="${realIndex}">✏️ Edit</button>
-              <button class="action-btn delete" type="button" data-index="${realIndex}">🗑️ Delete</button>
+            <div class="card-actions">
+              <button class="mini-btn edit" type="button" data-index="${realIndex}">✏️ Edit</button>
+              <button class="mini-btn delete" type="button" data-index="${realIndex}">🗑️ Delete</button>
             </div>
           </div>
         `;
 
-        grid.appendChild(card);
+        moviesGrid.appendChild(card);
       });
 
-      document.getElementById("filmCount").textContent =
-        `${filtered.length} ${filtered.length === 1 ? "Film" : "Films"}`;
+      document.getElementById("filmCount").textContent = `${filtered.length} ${filtered.length === 1 ? "Film" : "Films"}`;
 
-      document.querySelectorAll(".favorite-toggle").forEach(btn => {
+      document.querySelectorAll(".fav-btn").forEach(btn => {
         btn.addEventListener("click", () => {
-          const idx = parseInt(btn.dataset.index, 10);
+          const idx = Number(btn.dataset.index);
           toggleFavorite(idx);
         });
       });
 
-      document.querySelectorAll(".action-btn.edit").forEach(btn => {
+      document.querySelectorAll(".mini-btn.edit").forEach(btn => {
         btn.addEventListener("click", () => {
-          const idx = parseInt(btn.dataset.index, 10);
+          const idx = Number(btn.dataset.index);
           openEditModal(idx);
         });
       });
 
-      document.querySelectorAll(".action-btn.delete").forEach(btn => {
+      document.querySelectorAll(".mini-btn.delete").forEach(btn => {
         btn.addEventListener("click", () => {
-          const idx = parseInt(btn.dataset.index, 10);
+          const idx = Number(btn.dataset.index);
           deleteFilm(idx);
         });
       });
@@ -1978,11 +1277,10 @@ updateFilters();
     }
 
     function updateFilters() {
-      const langs = [...new Set(films.map(f => f.language).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-      const currentVal = filterLang.value;
-      filterLang.innerHTML = '<option value="">All Languages</option>' +
-        langs.map(lang => `<option value="${escapeAttr(lang)}">${escapeHtml(lang)}</option>`).join("");
-      filterLang.value = langs.includes(currentVal) ? currentVal : "";
+      const languages = [...new Set(films.map(f => f.language).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+      const currentValue = filterLang.value;
+      filterLang.innerHTML = `<option value="">All Languages</option>${languages.map(lang => `<option value="${escapeAttr(lang)}">${escapeHtml(lang)}</option>`).join("")}`;
+      filterLang.value = languages.includes(currentValue) ? currentValue : "";
     }
 
     function updateStats() {
@@ -1995,64 +1293,58 @@ updateFilters();
         : "0.0";
       document.getElementById("statAvg").textContent = avg;
 
-      const uniqueLanguages = new Set(films.map(f => f.language).filter(Boolean)).size;
-      document.getElementById("statLangs").textContent = uniqueLanguages;
+      const uniqueLangs = new Set(films.map(f => f.language).filter(Boolean)).size;
+      document.getElementById("statLangs").textContent = uniqueLangs;
 
-      const topRated = [...rated].sort((a, b) => (b.rating || 0) - (a.rating || 0))[0];
+      const favs = films.filter(f => f.favorite).length;
+      document.getElementById("statFav").textContent = favs;
+
+      const top = [...rated].sort((a, b) => (b.rating || 0) - (a.rating || 0))[0];
       const topEl = document.getElementById("statTop");
-      if (topRated) {
-        const label = topRated.name.length > 12 ? topRated.name.slice(0, 12) + "…" : topRated.name;
+      if (top) {
+        const label = top.name.length > 12 ? top.name.slice(0, 12) + "…" : top.name;
         topEl.textContent = label;
-        topEl.style.fontSize = "1.05rem";
       } else {
         topEl.textContent = "—";
-        topEl.style.fontSize = "1.8rem";
       }
-
-      const favoriteCount = films.filter(f => f.favorite).length;
-      document.getElementById("statFavorite").textContent = favoriteCount;
     }
 
-    function showToast(msg) {
-      toast.textContent = msg;
+    function showToast(message) {
+      toast.textContent = message;
       toast.classList.add("show");
-      clearTimeout(showToast.timeoutId);
-      showToast.timeoutId = setTimeout(() => {
-        toast.classList.remove("show");
-      }, 2200);
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
     }
 
-    function escapeHtml(text) {
+    function escapeHtml(value) {
       const div = document.createElement("div");
-      div.textContent = text ?? "";
+      div.textContent = value ?? "";
       return div.innerHTML;
     }
 
-    function escapeAttr(text) {
-      return String(text ?? "").replace(/'/g, "\\'").replace(/"/g, "&quot;");
+    function escapeAttr(value) {
+      return String(value ?? "").replace(/'/g, "\\'").replace(/"/g, "&quot;");
     }
 
     function makeId() {
-      if (window.crypto && crypto.randomUUID) {
-        return crypto.randomUUID();
-      }
+      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
       return "film-" + Date.now() + "-" + Math.random().toString(16).slice(2);
     }
 
-    function exportAsJson() {
+    function exportJson() {
       const blob = new Blob([JSON.stringify(films, null, 2)], { type: "application/json" });
       downloadBlob(blob, "aman-cinema-collection.json");
       showToast("📤 JSON exported");
     }
 
-    function exportAsCsv() {
+    function exportCsv() {
       const headers = ["name", "language", "cinema", "genre", "rating", "review", "favorite", "date"];
       const rows = films.map(f => [
         escapeCsv(f.name),
         escapeCsv(f.language),
         escapeCsv(f.cinema),
         escapeCsv(f.genre),
-        f.rating || 0,
+        Number(f.rating || 0),
         escapeCsv(f.review),
         f.favorite ? "true" : "false",
         escapeCsv(f.date)
@@ -2069,19 +1361,21 @@ updateFilters();
     }
 
     function downloadBlob(blob, filename) {
-      const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url;
+      a.href = URL.createObjectURL(blob);
       a.download = filename;
       a.click();
-      URL.revokeObjectURL(url);
+      URL.revokeObjectURL(a.href);
     }
 
-    function importJson() {
-      document.getElementById("importFileInput").click();
-    }
+    document.getElementById("exportJsonBtn").addEventListener("click", exportJson);
+    document.getElementById("exportCsvBtn").addEventListener("click", exportCsv);
 
-    document.getElementById("importFileInput").addEventListener("change", function (event) {
+    document.getElementById("importJsonBtn").addEventListener("click", () => {
+      document.getElementById("importFile").click();
+    });
+
+    document.getElementById("importFile").addEventListener("change", function (event) {
       const file = event.target.files[0];
       if (!file) return;
 
@@ -2089,9 +1383,7 @@ updateFilters();
       reader.onload = function (e) {
         try {
           const parsed = JSON.parse(e.target.result);
-          if (!Array.isArray(parsed)) {
-            throw new Error("Invalid JSON");
-          }
+          if (!Array.isArray(parsed)) throw new Error("Invalid JSON");
 
           films = parsed.map(item => ({
             id: item.id || makeId(),
@@ -2102,7 +1394,7 @@ updateFilters();
             poster: item.poster || "",
             review: item.review || "",
             rating: Number(item.rating) || 0,
-            favorite: Boolean(item.favorite),
+            favorite: !!item.favorite,
             date: item.date || new Date().toLocaleDateString("en-IN", {
               day: "numeric", month: "short", year: "numeric"
             }),
@@ -2113,31 +1405,42 @@ updateFilters();
           updateFilters();
           renderFilms();
           updateStats();
-          showToast("✅ Films imported");
-        } catch (error) {
+          showToast("✅ Import successful");
+        } catch {
           showToast("❌ Invalid JSON file");
         } finally {
           event.target.value = "";
         }
       };
+
       reader.readAsText(file);
     });
 
-    document.getElementById("exportJsonBtn").addEventListener("click", exportAsJson);
-    document.getElementById("exportCsvBtn").addEventListener("click", exportAsCsv);
-    document.getElementById("importBtn").addEventListener("click", importJson);
-
     document.getElementById("clearBtn").addEventListener("click", () => {
       if (!films.length) return showToast("No films to clear");
-      const ok = confirm("Clear all films from your collection?");
-      if (ok) {
-        films = [];
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(films));
-        updateFilters();
-        renderFilms();
-        updateStats();
-        showToast("🗑️ Collection cleared");
-      }
+      if (!confirm("Clear all films from your collection?")) return;
+      films = [];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(films));
+      updateFilters();
+      renderFilms();
+      updateStats();
+      showToast("🗑️ Collection cleared");
+    });
+
+    document.getElementById("posterPicker").addEventListener("click", () => {
+      document.getElementById("posterInput").click();
+    });
+
+    document.getElementById("posterInput").addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        document.getElementById("filmPoster").value = e.target.result;
+        document.getElementById("posterStatus").textContent = "Poster ready";
+      };
+      reader.readAsDataURL(file);
     });
 
     searchInput.addEventListener("input", renderFilms);
@@ -2145,40 +1448,23 @@ updateFilters();
     filterRating.addEventListener("change", renderFilms);
     sortSelect.addEventListener("change", renderFilms);
 
-    document.getElementById("editModal").addEventListener("click", (e) => {
-      if (e.target.id === "editModal") closeEditModal();
-    });
-
-    document.getElementById("uploadPosterBtn").addEventListener("click", () => {
-      document.getElementById("posterUploadInput").click();
-    });
-
-    document.getElementById("posterUploadInput").addEventListener("change", function (event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const dataUrl = e.target.result;
-        document.getElementById("filmPoster").value = dataUrl;
-        document.getElementById("posterStatus").textContent = "Poster ready";
-      };
-      reader.readAsDataURL(file);
+    document.getElementById("editModal").addEventListener("click", (event) => {
+      if (event.target.id === "editModal") closeEditModal();
     });
 
     if ("beforeinstallprompt" in window) {
       window.addEventListener("beforeinstallprompt", (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        installBtn.style.display = "inline-flex";
+        document.getElementById("installBtn").style.display = "inline-flex";
       });
 
-      installBtn.addEventListener("click", async () => {
+      document.getElementById("installBtn").addEventListener("click", async () => {
         if (!deferredPrompt) return;
         deferredPrompt.prompt();
         await deferredPrompt.userChoice;
         deferredPrompt = null;
-        installBtn.style.display = "none";
+        document.getElementById("installBtn").style.display = "none";
       });
     }
 
@@ -2186,9 +1472,5 @@ updateFilters();
     updateFilters();
     updateStats();
   </script>
-</body>
-</html>
-updateStats();
-</script>
 </body>
 </html>
