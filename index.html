@@ -1,1476 +1,468 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>aman bhatt | Film Vault</title>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aman's Cinema | Movie Experience</title>
+<style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter', 'Segoe UI', sans-serif; }
+
     :root {
-      --bg: #0b1020;
-      --bg-soft: #121a2d;
-      --panel: #161f35;
-      --panel-2: #1d2947;
-      --panel-3: #263356;
-      --border: rgba(255,255,255,0.08);
-      --text: #edf2ff;
-      --muted: #9aa9c7;
-      --primary: #ff4d6d;
-      --gold: #ffc857;
-      --green: #4ade80;
-      --blue: #60a5fa;
-      --purple: #a78bfa;
-      --shadow: rgba(0,0,0,0.35);
-      --danger: #ff5f6d;
-      --header-gradient: linear-gradient(135deg, #ff4d6d 0%, #ff8f5a 30%, #ffc857 100%);
+        --bg:#0a0a0f;
+        --surface:rgda(20, 20, 28, 0.75);
+        --surface-solid:#14141c;
+        --border:rgba(255, 255, 255, 0.1);
+        --text:#f1f1f5;
+        --muted:#b8b8c8;
+        --gold:#f5b942;
+        --red:#e50914;
     }
 
-    body.light {
-      --bg: #eef3ff;
-      --bg-soft: #f7f9ff;
-      --panel: #ffffff;
-      --panel-2: #f1f5ff;
-      --panel-3: #eaf0ff;
-      --border: rgba(33, 39, 58, 0.08);
-      --text: #141b2d;
-      --muted: #586884;
-      --primary: #e11d48;
-      --gold: #d19a00;
-      --green: #16a34a;
-      --blue: #2563eb;
-      --purple: #7c3aed;
-      --shadow: rgba(31,41,55,0.08);
-      --danger: #e11d48;
-      --header-gradient: linear-gradient(135deg, #e11d48 0%, #f97316 35%, #fbbf24 100%);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
+    /* ============================================
+       CINEMA
+       ============================================ */
     body {
-      font-family: "Inter", "Segoe UI", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      transition: background 0.25s ease, color 0.25s ease;
-      min-height: 100vh;
+        background-color: #008;
+        color: var(--text);
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
     }
 
-    a { text-decoration: none; }
+    /* Fixed cinema background image */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1920&q=80');
+        /* ↑ Yeh Unsplash ki free cinema hall image hai */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        z-index: -2;
+        filter: brightness(0.4) saturate(0.9);
+        /* ↑ Image ko dark karta hai taaki text clear dikhe */
+    }
+
+    /* Dark gradient overlay */
+    body::after {
+        content: '';
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: 
+            radial-gradient(ellipse at center, rgba(229, 9, 20, 0.15) 0%, transparent 60%),
+            linear-gradient(180deg, rgba(10, 10, 15, 0.7) 0%, rgba(10, 10, 15, 0.95) 100%);
+        z-index: -1;
+        pointer-events: none;
+    }
 
     .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 22px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px;
+        position: relative;
+        z-index: 1;
     }
 
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      backdrop-filter: blur(12px);
-      background: rgba(11, 16, 32, 0.72);
-      border-bottom: 1px solid var(--border);
+    /* ============================================
+       HEADER - Glass effect
+       ============================================ */
+    header {
+        padding: 20px 28px;
+        background: var(--surface);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     }
 
-    body.light .topbar {
-      background: rgba(238, 243, 255, 0.7);
+    .logo {
+        font-size: 1.3rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 12px;
     }
 
-    .topbar-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 17px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
+    .logo-icon {
+        width: 49px;
+        height: 42px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--red), var(--gold));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      font-size: 1.2rem;
-      letter-spacing: 0.02em;
+    .logo-text {
+        background: linear-gradient(135deg, var(--red), var(--gold));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
-    .brand-mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      background: var(--header-gradient);
-      box-shadow: 0 12px 24px rgba(255, 77, 109, 0.28);
-      font-size: 1.2rem;
+    .header-right {
+        display: flex;
+        gap: 12px;
+        align-items: center;
     }
 
-    .brand-name {
-      background: var(--header-gradient);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    .stat-badge {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        padding: 6px 14px;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        color: var(--muted);
     }
 
-    .top-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .badge {
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-
-    .badge strong {
-      color: var(--gold);
-      font-weight: 800;
-    }
-
-    .action-btn, .soft-btn, .icon-btn, .main-btn {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--panel);
-      color: var(--text);
-      cursor: pointer;
-      transition: 0.2s ease;
-      font: inherit;
-    }
-
-    .soft-btn, .main-btn {
-      padding: 10px 14px;
-      font-size: 0.82rem;
-      font-weight: 700;
-    }
-
-    .main-btn {
-      background: var(--header-gradient);
-      color: white;
-      border: none;
-      min-height: 46px;
-      box-shadow: 0 18px 32px rgba(255, 77, 109, 0.22);
-    }
-
-    .icon-btn {
-      width: 42px;
-      height: 42px;
-      font-size: 1rem;
-      display: grid;
-      place-items: center;
-    }
-
-    .action-btn:hover, .soft-btn:hover, .icon-btn:hover, .main-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 14px 30px var(--shadow);
-    }
-
+    /* ============================================
+       HERO - Big cinematic title
+       ============================================ */
     .hero {
-      padding: 44px 0 28px;
-      text-align: center;
-      position: relative;
+        text-align: center;
+        padding: 50px 20px 60px;
     }
 
-    .hero::before {
-      content: "";
-      position: absolute;
-      top: -60px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(255,77,109,0.15), transparent 70%);
-      filter: blur(12px);
-      pointer-events: none;
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 18px;
+        border-radius: 50px;
+        background: rgba(229, 9, 20, 0.15);
+        border: 1px solid rgba(229, 9, 20, 0.4);
+        font-size: 0.75rem;
+        color: #ff5c5c;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        backdrop-filter: blur(10px);
     }
 
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: rgba(255, 77, 109, 0.08);
-      border: 1px solid rgba(255, 77, 109, 0.25);
-      color: var(--primary);
-      border-radius: 999px;
-      font-size: 0.72rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      font-weight: 800;
-      margin-bottom: 18px;
+    .hero h1 {
+        font-size: clamp(2rem, 6vw, 4rem);
+        font-weight: 900;
+        line-height: 1.05;
+        margin-bottom: 18px;
+        letter-spacing: -0.02em;
+        text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
     }
 
-    h1 {
-      font-size: clamp(2.2rem, 4vw, 4rem);
-      line-height: 1.08;
-      margin-bottom: 12px;
-      font-weight: 900;
-      letter-spacing: -0.04em;
+    .hero h1 span {
+        background: linear-gradient(135deg, var(--red), var(--gold));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 30px rgba(245, 185, 66, 0.4));
     }
 
-    h1 span {
-      background: var(--header-gradient);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    .hero p {
+        color: var(--muted);
+        max-width: 600px;
+        margin: 0 auto;
+        font-size: 1.05rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
 
-    .subtext {
-      color: var(--muted);
-      max-width: 640px;
-      margin: 0 auto;
-      font-size: 1rem;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px;
-      margin: 26px 0 30px;
-    }
-
-    .stat-card {
-      background:linear-gradient(180deg, var(--panel), var(--panel-2));
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 22px 18px;
-      text-align: center;
-      box-shadow: 0 12px 28px var(--shadow);
-    }
-
-    .stat-card .value {
-      font-size: clamp(1.8rem, 3vw, 2.4rem);
-      font-weight: 900;
-      background: var(--header-gradient);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .stat-card .label {
-      margin-top: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-      font-size: 0.72rem;
-      font-weight: 700;
-    }
-
-    .add-panel {
-      background: linear-gradient(180deg, var(--panel), var(--panel-2));
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 26px 22px;
-      box-shadow: 0 20px 42px var(--shadow);
-      margin-bottom: 30px;
-      position: relative;
-    }
-
-    .add-panel::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      border-radius: 24px 24px 0 0;
-      background: var(--header-gradient);
-    }
-
-    .panel-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .panel-title {
-      font-size: 1.2rem;
-      font-weight: 800;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-      margin-bottom: 14px;
-    }
-
-    .form-grid.full { grid-template-columns: 1fr; }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .field label {
-      font-size: 0.72rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 800;
-    }
-
-    .field input,
-    .field textarea,
-    .field select {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: rgba(255,255,255,0.02);
-      color: var(--text);
-      font: inherit;
-      padding: 12px 14px;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    body.light .field input,
-    body.light .field textarea,
-    body.light .field select {
-      background: #f8faff;
-    }
-
-    .field input::placeholder,
-    .field textarea::placeholder {
-      color: #7582a3;
-    }
-
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
-      border-color: rgba(255, 77, 109, 0.7);
-      box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.12);
-    }
-
-    textarea {
-      resize: vertical;
-      min-height: 82px;
-    }
-
-    .star-wrap {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      min-height: 44px;
-      padding: 4px 2px;
-    }
-
-    .star {
-      font-size: 1.8rem;
-      color: #4a5267;
-      cursor: pointer;
-      user-select: none;
-      transition: transform 0.15s ease, color 0.15s ease;
-      line-height: 1;
-    }
-
-    .star.active {
-      color: var(--gold);
-      transform: scale(1.08);
-    }
-
-    .star:hover {
-      color: var(--gold);
-    }
-
-    .upload-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 4px;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .toolbar {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 12px;
-      margin-bottom: 22px;
-    }
-
+    /* ============================================
+       SEARCH BOX - Glass effect
+       ============================================ */
     .search-box {
-      position: relative;
+        position: relative;
+        margin-bottom: 40px;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .search-box input {
-      width: 100%;
-      padding: 13px 16px 13px 42px;
-      border-radius: 12px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font: inherit;
-      outline: none;
+        width: 100%;
+        padding: 18px 24px 18px 56px;
+        border-radius: 14px;
+        background: rgba(20, 20, 28, 0.75);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .search-box input:focus {
+        border-color: var(--red);
+        box-shadow: 0 8px 32px rgba(229, 9, 20, 0.3);
+    }
+
+    .search-box input::placeholder {
+        color: var(--muted);
     }
 
     .search-box::before {
-      content: "🔎";
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.95rem;
-      opacity: 0.8;
+        content: '🔍';
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
+        opacity: 0.7;
+        z-index: 2;
     }
 
-    .filter-select {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--text);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font: inherit;
-      outline: none;
+    /* ============================================
+       FILMS GRID
+       ============================================ */
+    .films-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 24px;
+        margin-bottom: 60px;
     }
 
-    .collection-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin: 12px 0 18px;
-      flex-wrap: wrap;
+    .film-card {
+        background: rgba(20, 20, 28, 0.75);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.35s ease;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     }
 
-    .collection-title {
-      font-size: 1.28rem;
-      font-weight: 800;
+    .film-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(245, 185, 66, 0.5);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(229, 9, 20, 0.2);
     }
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
+    .film-poster {
+        width: 100%;
+        aspect-ratio: 2 / 3;
+        background-color: #1a1a24;
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        opacity: 0.95;
+        position: relative;
     }
 
-    .movie-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-      gap: 20px;
-      padding-bottom: 60px;
+    .film-poster::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(20, 20, 28, 0.9) 0%, transparent 40%);
     }
 
-    .movie-card {
-      background: linear-gradient(180deg, var(--panel), var(--panel-2));
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      overflow: hidden;
-      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
-      box-shadow: 0 18px 36px var(--shadow);
-      display: flex;
-      flex-direction: column;
+    .film-info {
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
     }
 
-    .movie-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(255, 77, 109, 0.4);
+    .film-title {
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+        line-height: 1.3;
     }
 
-    .movie-poster {
-      height: 270px;
-      position: relative;
-      background: linear-gradient(135deg, var(--panel-3), #0e1425);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-size: cover;
-      background-position: center;
-      overflow: hidden;
+    .film-meta {
+        font-size: 0.82rem;
+        color: var(--muted);
+        margin-bottom: 8px;
     }
 
-    .movie-poster::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(11,16,32,0.9), transparent 60%);
-    }
-
-    .poster-fallback {
-      font-size: 3rem;
-      position: relative;
-      z-index: 1;
-      opacity: 0.9;
-    }
-
-    .movie-content {
-      padding: 17px 16px 16px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    .movie-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
-
-    .movie-name {
-      font-size: 1.15rem;
-      font-weight: 800;
-      line-height: 1.4;
-      flex: 1;
-      min-width: 0;
-    }
-
-    .fav-btn {
-      border: none;
-      background: transparent;
-      font-size: 1.4rem;
-      cursor: pointer;
-      color: var(--muted);
-      transition: color 0.2s ease, transform 0.2s ease;
-    }
-
-    .fav-btn.active {
-      color: var(--gold);
-      transform: scale(1.1);
-    }
-
-    .stars {
-      display: flex;
-      gap: 2px;
-      margin-bottom: 10px;
-      font-size: 0.95rem;
-    }
-
-    .stars .filled { color: var(--gold); }
-    .stars .empty { color: #4b5772; }
-
-    .meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 10px;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 4px 9px;
-      font-size: 0.7rem;
-      font-weight: 800;
-      border-radius: 8px;
-      letter-spacing: 0.02em;
-      border: 1px solid transparent;
-    }
-
-    .tag.lang {
-      background: rgba(167, 139, 250, 0.12);
-      color: var(--purple);
-      border-color: rgba(167, 139, 250, 0.25);
-    }
-
-    .tag.cinema {
-      background: rgba(255, 200, 87, 0.12);
-      color: var(--gold);
-      border-color: rgba(255,200,87,0.25);
-    }
-
-    .tag.genre {
-      background: rgba(74,222,128,0.12);
-      color: var(--green);
-      border-color: rgba(74,222,128,0.25);
-    }
-
-    .review {
-      color: var(--muted);
-      font-size: 0.83rem;
-      margin-bottom: 14px;
-      flex: 1;
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .movie-date {
-      color: #7582a3;
-      font-size: 0.72rem;
-      margin-bottom: 10px;
-    }
-
-    .card-actions {
-      display: flex;
-      gap: 8px;
-      margin-top: auto;
-      padding-top: 10px;
-      border-top: 1px solid var(--border);
-    }
-
-    .mini-btn {
-      flex: 1;
-      border: 1px solid var(--border);
-      background: transparent;
-      border-radius: 10px;
-      padding: 8px 10px;
-      font: inherit;
-      color: var(--muted);
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
-
-    .mini-btn:hover {
-      background: rgba(255,255,255,0.02);
-      color: var(--text);
-    }
-
-    .mini-btn.delete:hover {
-      color: var(--danger);
-      border-color: rgba(255,95,109,0.35);
-    }
-
-    .mini-btn.edit:hover {
-      color: var(--gold);
-      border-color: rgba(255,200,87,0.35);
-    }
-
-    .empty {
-      text-align: center;
-      padding: 72px 20px;
-      background: linear-gradient(180deg, var(--panel), var(--panel-2));
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      grid-column: 1 / -1;
-      box-shadow: 0 12px 26px var(--shadow);
+    /* ============================================
+       STATES (loading, empty)
+       ============================================ */
+    .loading-state, .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        color: var(--muted);
+        grid-column: 1 / -1;
+        background: rgba(20, 20, 28, 0.6);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     }
 
     .empty-icon {
-      font-size: 3.5rem;
-      opacity: 0.75;
-      margin-bottom: 10px;
+        font-size: 3.5rem;
+        margin-bottom: 16px;
+        opacity: 0.6;
     }
 
-    .empty h3 {
-      font-size: 1.3rem;
-      margin-bottom: 8px;
+    .empty-state h3 {
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+        color: var(--text);
     }
 
-    .empty p {
-      color: var(--muted);
+    /* ============================================
+       FOOTER
+       ============================================ */
+    footer {
+        text-align: center;
+        padding: 30px 0;
+        color: var(--muted);
+        font-size: 0.85rem;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
 
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(10, 12, 18, 0.72);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 90;
-      padding: 20px;
-      backdrop-filter: blur(6px);
+    footer span {
+        background: linear-gradient(135deg, var(--red), var(--gold));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-weight: 700;
     }
 
-    .modal-overlay.active {
-      display: flex;
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 640px) {
+        .container { padding: 16px; }
+        header { padding: 16px 20px; }
+        .logo { font-size: 1.1rem; }
+        .logo-icon { width: 36px; height: 36px; }
+        .films-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+        .film-info { padding: 14px; }
+        .film-title { font-size: 0.95rem; }
     }
-
-    .modal {
-      width: min(540px, 100%);
-      background: linear-gradient(180deg, var(--panel), var(--panel-2));
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      box-shadow: 0 18px 46px rgba(0,0,0,0.45);
-      padding: 26px 20px 18px;
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      right: 14px;
-      top: 14px;
-      width: 32px;
-      height: 32px;
-      border: none;
-      border-radius: 10px;
-      background: transparent;
-      color: var(--muted);
-      font-size: 1.3rem;
-      cursor: pointer;
-    }
-
-    .modal-close:hover {
-      background: rgba(255,255,255,0.03);
-      color: var(--danger);
-    }
-
-    .modal h2 {
-      font-size: 1.4rem;
-      margin-bottom: 18px;
-      padding-right: 24px;
-    }
-
-    .modal .field {
-      margin-bottom: 14px;
-    }
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 26px;
-      transform: translateX(-50%) translateY(100px);
-      background: var(--panel);
-      border: 1px solid rgba(74,222,128,0.45);
-      color: var(--text);
-      padding: 12px 18px;
-      border-radius: 12px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      box-shadow: 0 14px 30px rgba(0,0,0,0.28);
-      opacity: 0;
-      transition: all 0.25s ease;
-      z-index: 100;
-      min-width: 150px;
-      text-align: center;
-    }
-
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-
-    @media (max-width: 900px) {
-      .toolbar {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    @media (max-width: 700px) {
-      .toolbar {
-        grid-template-columns: 1fr;
-      }
-
-      .collection-header {
-        align-items: flex-start;
-      }
-    }
-  </style>
+</style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand">
-        <div class="brand-mark">🎬</div>
-        <div class="brand-name">Aman’s Cinema</div>
-      </div>
 
-      <div class="top-actions">
-        <div class="badge">🎞️ <strong id="headerCount">0</strong> Films</div>
-        <button id="themeToggle" class="icon-btn" type="button" aria-label="Toggle theme">🌙</button>
-        <button id="installBtn" class="soft-btn" type="button" style="display:none;">📲 Install</button>
-        <a href="https://amanmirza.github.io" class="soft-btn" style="display:inline-flex; align-items:center; justify-content:center;">← Home</a>
-      </div>
-    </div>
-  </header>
+<div class="container">
+    <!-- HEADER -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon">🎬</div>
+            <div class="logo-text">Aman's Cinema</div>
+        </div>
+        <div class="header-right">
+            <div class="stat-badge">🎞️ Powered by TMDB</div>
+        </div>
+    </header>
 
-  <div class="container">
+    <!-- HERO -->
     <section class="hero">
-      <div class="pill">🎥 My Film Diary</div>
-      <h1>Films I've <span>Watched</span></h1>
-      <p class="subtext">Track every movie with your rating, review, favorite status, and cinema source — all in one lovely vault.</p>
+        <div class="hero-badge">🍿 Now Showing</div>
+        <h1>Find Your Next <span>Favorite Film</span></h1>
+        <p>Search any movie and discover its poster, rating, and details — right from the comfort of your cinema seat.</p>
     </section>
 
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="value" id="statTotal">0</div>
-        <div class="label">Total Films</div>
-      </div>
-      <div class="stat-card">
-        <div class="value" id="statAvg">0.0</div>
-        <div class="label">Avg Rating</div>
-      </div>
-      <div class="stat-card">
-        <div class="value" id="statLangs">0</div>
-        <div class="label">Languages</div>
-      </div>
-      <div class="stat-card">
-        <div class="value" id="statFav">0</div>
-        <div class="label">Favorites</div>
-      </div>
-      <div class="stat-card">
-        <div class="value" id="statTop">—</div>
-        <div class="label">Top Rated</div>
-      </div>
+    <!-- SEARCH -->
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search for a movie... (e.g., Inception, Interstellar)">
     </div>
 
-    <section class="add-panel">
-      <div class="panel-head">
-        <div class="panel-title">➕ Add a New Film</div>
-      </div>
-
-      <form id="filmForm">
-        <div class="form-grid">
-          <div class="field">
-            <label>Film Name *</label>
-            <input type="text" id="filmName" placeholder="e.g. Interstellar" required />
-          </div>
-
-          <div class="field">
-            <label>Language *</label>
-            <input type="text" id="filmLang" placeholder="e.g. English" required />
-          </div>
-
-          <div class="field">
-            <label>Cinema / Platform *</label>
-            <input type="text" id="filmCinema" placeholder="e.g. Netflix, PVR, IMDB" required />
-          </div>
-
-          <div class="field">
-            <label>Genre</label>
-            <input type="text" id="filmGenre" placeholder="e.g. Sci-Fi" />
-          </div>
-        </div>
-
-        <div class="form-grid">
-          <div class="field">
-            <label>Poster URL</label>
-            <input type="url" id="filmPoster" placeholder="https://..." />
-            <div class="upload-row">
-              <button type="button" class="soft-btn" id="posterPicker">📷 Upload</button>
-              <span id="posterStatus" style="color: var(--muted); font-size: 0.75rem;"></span>
-            </div>
-            <input type="file" id="posterInput" class="hidden" accept="image/*" />
-          </div>
-
-          <div class="field">
-            <label>Your Rating</label>
-            <div class="star-wrap" id="starInput">
-              <span class="star" data-value="1">★</span>
-              <span class="star" data-value="2">★</span>
-              <span class="star" data-value="3">★</span>
-              <span class="star" data-value="4">★</span>
-              <span class="star" data-value="5">★</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-grid full">
-          <div class="field">
-            <label>Review / Notes</label>
-            <textarea id="filmReview" placeholder="What did you think about this film?"></textarea>
-          </div>
-        </div>
-
-        <button class="main-btn" type="submit" style="width:100%;">Add Film 🎬</button>
-      </form>
-    </section>
-
-    <div class="toolbar">
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search films..." />
-      </div>
-
-      <select class="filter-select" id="filterLang">
-        <option value="">All Languages</option>
-      </select>
-
-      <select class="filter-select" id="filterRating">
-        <option value="">All Ratings</option>
-        <option value="5">⭐⭐⭐⭐⭐ 5</option>
-        <option value="4">⭐⭐⭐⭐ 4+</option>
-        <option value="3">⭐⭐⭐ 3+</option>
-      </select>
-
-      <select class="filter-select" id="sortSelect">
-        <option value="newest">Newest</option>
-        <option value="oldest">Oldest</option>
-        <option value="rating-desc">Rating ↓</option>
-        <option value="rating-asc">Rating ↑</option>
-        <option value="name-asc">Name A–Z</option>
-        <option value="name-desc">Name Z–A</option>
-        <option value="favorite">Favorites First</option>
-      </select>
+    <!-- FILMS GRID -->
+    <div class="films-grid" id="filmsGrid">
+        <div class="loading-state">Type a movie name to start exploring... 🍿</div>
     </div>
 
-    <div class="collection-header">
-      <div class="collection-title">📽️ My Collection</div>
+    <!-- FOOTER -->
+    <footer>
+        Made with ❤️ by <span>Aman Mirza</span> • © 2024
+    </footer>
+</div>
 
-      <div class="header-actions">
-        <button class="soft-btn" id="exportJsonBtn" type="button">Export JSON</button>
-        <button class="soft-btn" id="exportCsvBtn" type="button">Export CSV</button>
-        <button class="soft-btn" id="importJsonBtn" type="button">Import JSON</button>
-        <button class="soft-btn" id="clearBtn" type="button" style="color: var(--danger); border-color: rgba(255,95,109,0.4);">Clear All</button>
-      </div>
+<script>
+    // ============================================================
+    // YAHAN APNI TMDB API KEY PASTE KARO
+    // ============================================================
+    const TMDB_API_KEY = 'YOUR_TMDB_API_KEY_HERE';
+    // ============================================================
 
-      <div class="badge" id="filmCount">0 Films</div>
-    </div>
+    const searchInput = document.getElementById('searchInput');
+    const filmsGrid = document.getElementById('filmsGrid');
+    const IMG_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
-    <input type="file" id="importFile" class="hidden" accept="application/json" />
+    let debounceTimer;
 
-    <div class="movie-grid" id="moviesGrid"></div>
-  </div>
-
-  <div id="editModal" class="modal-overlay">
-    <div class="modal">
-      <button class="modal-close" type="button" onclick="closeEditModal()">✕</button>
-      <h2>✏️ Edit Film</h2>
-
-      <form id="editForm">
-        <input type="hidden" id="editIndex" />
-
-        <div class="field">
-          <label>Film Name</label>
-          <input type="text" id="editName" required />
-        </div>
-
-        <div class="field">
-          <label>Language</label>
-          <input type="text" id="editLang" required />
-        </div>
-
-        <div class="field">
-          <label>Cinema / Platform</label>
-          <input type="text" id="editCinema" required />
-        </div>
-
-        <div class="field">
-          <label>Genre</label>
-          <input type="text" id="editGenre" />
-        </div>
-
-        <div class="field">
-          <label>Poster URL</label>
-          <input type="url" id="editPoster" />
-        </div>
-
-        <div class="field">
-          <label>Rating</label>
-          <div class="star-wrap" id="editStarInput">
-            <span class="star" data-value="1">★</span>
-            <span class="star" data-value="2">★</span>
-            <span class="star" data-value="3">★</span>
-            <span class="star" data-value="4">★</span>
-            <span class="star" data-value="5">★</span>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Review</label>
-          <textarea id="editReview"></textarea>
-        </div>
-
-        <button type="submit" class="main-btn" style="width:100%;">Save Changes 💾</button>
-      </form>
-    </div>
-  </div>
-
-  <div id="toast" class="toast"></div>
-
-  <script>
-    const STORAGE_KEY = "amanCinemaFilmVault";
-    const THEME_KEY = "amanCinemaTheme";
-    let films = loadFilms();
-    let currentRating = 0;
-    let editRating = 0;
-    let deferredPrompt = null;
-
-    const form = document.getElementById("filmForm");
-    const moviesGrid = document.getElementById("moviesGrid");
-    const searchInput = document.getElementById("searchInput");
-    const filterLang = document.getElementById("filterLang");
-    const filterRating = document.getElementById("filterRating");
-    const sortSelect = document.getElementById("sortSelect");
-    const toast = document.getElementById("toast");
-
-    function loadFilms() {
-      try {
-        const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
-        return Array.isArray(data) ? data : [];
-      } catch {
-        return [];
-      }
-    }
-
-    function saveFilms() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(films));
-      updateFilters();
-      renderFilms();
-      updateStats();
-    }
-
-    function applyTheme(theme = localStorage.getItem(THEME_KEY) || "dark") {
-      document.body.classList.toggle("light", theme === "light");
-      document.getElementById("themeToggle").textContent = theme === "dark" ? "🌙" : "☀️";
-      localStorage.setItem(THEME_KEY, theme);
-    }
-    applyTheme();
-
-    document.getElementById("themeToggle").addEventListener("click", () => {
-      const next = document.body.classList.contains("light") ? "dark" : "light";
-      applyTheme(next);
-    });
-
-    function setupStars(container, setter) {
-      const stars = container.querySelectorAll(".star");
-      stars.forEach(star => {
-        star.addEventListener("click", () => {
-          const value = Number(star.dataset.value);
-          setter(value);
-          paintStars(container, value);
-        });
-
-        star.addEventListener("mouseenter", () => {
-          const value = Number(star.dataset.value);
-          stars.forEach(s => {
-            s.style.color = Number(s.dataset.value) <= value ? "#ffc857" : "#4b5772";
-          });
-        });
-      });
-
-      container.addEventListener("mouseleave", () => {
-        const active = Number(container.dataset.active || 0);
-        paintStars(container, active);
-      });
-    }
-
-    function paintStars(container, rating) {
-      container.dataset.active = String(rating || 0);
-      container.querySelectorAll(".star").forEach(star => {
-        const value = Number(star.dataset.value);
-        const active = value <= rating;
-        star.classList.toggle("active", active);
-        star.style.color = active ? "#ffc857" : "#4b5772";
-      });
-    }
-
-    setupStars(document.getElementById("starInput"), value => currentRating = value);
-    setupStars(document.getElementById("editStarInput"), value => editRating = value);
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const film = {
-        id: makeId(),
-        name: document.getElementById("filmName").value.trim(),
-        language: document.getElementById("filmLang").value.trim(),
-        cinema: document.getElementById("filmCinema").value.trim(),
-        genre: document.getElementById("filmGenre").value.trim(),
-        poster: document.getElementById("filmPoster").value.trim(),
-        review: document.getElementById("filmReview").value.trim(),
-        rating: currentRating,
-        favorite: false,
-        date: new Date().toLocaleDateString("en-IN", {
-          day: "numeric",
-          month: "short",
-          year: "numeric"
-        }),
-        createdAt: new Date().toISOString()
-      };
-
-      if (!film.name || !film.language || !film.cinema) return;
-
-      films.unshift(film);
-      saveFilms();
-      form.reset();
-      currentRating = 0;
-      paintStars(document.getElementById("starInput"), 0);
-      document.getElementById("posterStatus").textContent = "";
-      showToast("✅ Film added!");
-      document.getElementById("moviesGrid").scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-
-    function deleteFilm(index) {
-      if (confirm("Delete this film?")) {
-        films.splice(index, 1);
-        saveFilms();
-        showToast("🗑️ Film deleted");
-      }
-    }
-
-    function toggleFavorite(index) {
-      films[index].favorite = !films[index].favorite;
-      saveFilms();
-      showToast(films[index].favorite ? "⭐ Added to favorites" : "☆ Removed from favorites");
-    }
-
-    function openEditModal(index) {
-      const film = films[index];
-      if (!film) return;
-
-      document.getElementById("editIndex").value = index;
-      document.getElementById("editName").value = film.name;
-      document.getElementById("editLang").value = film.language;
-      document.getElementById("editCinema").value = film.cinema;
-      document.getElementById("editGenre").value = film.genre || "";
-      document.getElementById("editPoster").value = film.poster || "";
-      document.getElementById("editReview").value = film.review || "";
-      editRating = film.rating || 0;
-      paintStars(document.getElementById("editStarInput"), editRating);
-      document.getElementById("editModal").classList.add("active");
-    }
-
-    function closeEditModal() {
-      document.getElementById("editModal").classList.remove("active");
-    }
-
-    document.getElementById("editForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const index = Number(document.getElementById("editIndex").value);
-      if (!Number.isInteger(index) || !films[index]) return;
-
-      films[index] = {
-        ...films[index],
-        name: document.getElementById("editName").value.trim(),
-        language: document.getElementById("editLang").value.trim(),
-        cinema: document.getElementById("editCinema").value.trim(),
-        genre: document.getElementById("editGenre").value.trim(),
-        poster: document.getElementById("editPoster").value.trim(),
-        review: document.getElementById("editReview").value.trim(),
-        rating: editRating
-      };
-
-      saveFilms();
-      closeEditModal();
-      showToast("💾 Changes saved!");
-    });
-
-    function getFilteredFilms() {
-      const search = searchInput.value.toLowerCase().trim();
-      const lang = filterLang.value;
-      const ratingMin = filterRating.value ? Number(filterRating.value) : 0;
-      const sortValue = sortSelect.value;
-
-      let filtered = films.filter(film => {
-        const matchSearch =
-          !search ||
-          (film.name || "").toLowerCase().includes(search) ||
-          (film.language || "").toLowerCase().includes(search) ||
-          (film.genre || "").toLowerCase().includes(search) ||
-          (film.cinema || "").toLowerCase().includes(search);
-
-        const matchLang = !lang || film.language === lang;
-        const matchRating = !ratingMin || (film.rating || 0) >= ratingMin;
-        return matchSearch && matchLang && matchRating;
-      });
-
-      filtered.sort((a, b) => {
-        switch (sortValue) {
-          case "oldest":
-            return new Date(a.createdAt || 0) - new Date(b.createdAt || 0);
-          case "rating-desc":
-            return (b.rating || 0) - (a.rating || 0);
-          case "rating-asc":
-            return (a.rating || 0) - (b.rating || 0);
-          case "name-asc":
-            return (a.name || "").localeCompare(b.name || "");
-          case "name-desc":
-            return (b.name || "").localeCompare(a.name || "");
-          case "favorite":
-            return Number(b.favorite) - Number(a.favorite) || new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
-          case "newest":
-          default:
-            return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+    searchInput.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        const query = searchInput.value.trim();
+        if (query.length === 0) {
+            filmsGrid.innerHTML = '<div class="loading-state">Type a movie name to start exploring... 🍿</div>';
+            return;
         }
-      });
-
-      return filtered;
-    }
-
-    function renderFilms() {
-      const filtered = getFilteredFilms();
-      moviesGrid.innerHTML = "";
-
-      if (!filtered.length) {
-        moviesGrid.innerHTML = `
-          <div class="empty">
-            <div class="empty-icon">🎞️</div>
-            <h3>${films.length ? "No films match your filters" : "No films added yet"}</h3>
-            <p>${films.length ? "Try different search or filter terms." : "Start by adding your first movie above."}</p>
-          </div>
-        `;
-        document.getElementById("filmCount").textContent = "0 Films";
-        return;
-      }
-
-      filtered.forEach(film => {
-        const realIndex = films.findIndex(item => item.id === film.id);
-        const posterStyle = film.poster ? `background-image:url('${escapeAttr(film.poster)}');` : "";
-        const fallback = film.poster ? "" : "<div class='poster-fallback'>🎬</div>";
-
-        const card = document.createElement("div");
-        card.className = "movie-card";
-        card.innerHTML = `
-          <div class="movie-poster" style="${posterStyle}">
-            ${fallback}
-          </div>
-
-          <div class="movie-content">
-            <div class="movie-top">
-              <div class="movie-name">${escapeHtml(film.name)}</div>
-              <button class="fav-btn ${film.favorite ? "active" : ""}" type="button" data-index="${realIndex}" aria-label="Toggle favorite">
-                ${film.favorite ? "★" : "☆"}
-              </button>
-            </div>
-
-            <div class="stars">${renderStars(film.rating || 0)}</div>
-
-            <div class="meta">
-              <span class="tag lang">🌐 ${escapeHtml(film.language)}</span>
-              <span class="tag cinema">📍 ${escapeHtml(film.cinema)}</span>
-              ${film.genre ? `<span class="tag genre">${escapeHtml(film.genre)}</span>` : ""}
-            </div>
-
-            ${film.review ? `<div class="review">${escapeHtml(film.review)}</div>` : ""}
-            <div class="movie-date">📅 ${escapeHtml(film.date)}</div>
-
-            <div class="card-actions">
-              <button class="mini-btn edit" type="button" data-index="${realIndex}">✏️ Edit</button>
-              <button class="mini-btn delete" type="button" data-index="${realIndex}">🗑️ Delete</button>
-            </div>
-          </div>
-        `;
-
-        moviesGrid.appendChild(card);
-      });
-
-      document.getElementById("filmCount").textContent = `${filtered.length} ${filtered.length === 1 ? "Film" : "Films"}`;
-
-      document.querySelectorAll(".fav-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const idx = Number(btn.dataset.index);
-          toggleFavorite(idx);
-        });
-      });
-
-      document.querySelectorAll(".mini-btn.edit").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const idx = Number(btn.dataset.index);
-          openEditModal(idx);
-        });
-      });
-
-      document.querySelectorAll(".mini-btn.delete").forEach(btn => {
-        btn.addEventListener("click", () => {
-          const idx = Number(btn.dataset.index);
-          deleteFilm(idx);
-        });
-      });
-    }
-
-    function renderStars(rating) {
-      let html = "";
-      for (let i = 1; i <= 5; i++) {
-        html += `<span class="${i <= rating ? "filled" : "empty"}">★</span>`;
-      }
-      return html;
-    }
-
-    function updateFilters() {
-      const languages = [...new Set(films.map(f => f.language).filter(Boolean))].sort((a, b) => a.localeCompare(b));
-      const currentValue = filterLang.value;
-      filterLang.innerHTML = `<option value="">All Languages</option>${languages.map(lang => `<option value="${escapeAttr(lang)}">${escapeHtml(lang)}</option>`).join("")}`;
-      filterLang.value = languages.includes(currentValue) ? currentValue : "";
-    }
-
-    function updateStats() {
-      document.getElementById("statTotal").textContent = films.length;
-      document.getElementById("headerCount").textContent = films.length;
-
-      const rated = films.filter(f => Number(f.rating) > 0);
-      const avg = rated.length
-        ? (rated.reduce((sum, f) => sum + Number(f.rating), 0) / rated.length).toFixed(1)
-        : "0.0";
-      document.getElementById("statAvg").textContent = avg;
-
-      const uniqueLangs = new Set(films.map(f => f.language).filter(Boolean)).size;
-      document.getElementById("statLangs").textContent = uniqueLangs;
-
-      const favs = films.filter(f => f.favorite).length;
-      document.getElementById("statFav").textContent = favs;
-
-      const top = [...rated].sort((a, b) => (b.rating || 0) - (a.rating || 0))[0];
-      const topEl = document.getElementById("statTop");
-      if (top) {
-        const label = top.name.length > 12 ? top.name.slice(0, 12) + "…" : top.name;
-        topEl.textContent = label;
-      } else {
-        topEl.textContent = "—";
-      }
-    }
-
-    function showToast(message) {
-      toast.textContent = message;
-      toast.classList.add("show");
-      clearTimeout(showToast.timer);
-      showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
-    }
-
-    function escapeHtml(value) {
-      const div = document.createElement("div");
-      div.textContent = value ?? "";
-      return div.innerHTML;
-    }
-
-    function escapeAttr(value) {
-      return String(value ?? "").replace(/'/g, "\\'").replace(/"/g, "&quot;");
-    }
-
-    function makeId() {
-      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
-      return "film-" + Date.now() + "-" + Math.random().toString(16).slice(2);
-    }
-
-    function exportJson() {
-      const blob = new Blob([JSON.stringify(films, null, 2)], { type: "application/json" });
-      downloadBlob(blob, "aman-cinema-collection.json");
-      showToast("📤 JSON exported");
-    }
-
-    function exportCsv() {
-      const headers = ["name", "language", "cinema", "genre", "rating", "review", "favorite", "date"];
-      const rows = films.map(f => [
-        escapeCsv(f.name),
-        escapeCsv(f.language),
-        escapeCsv(f.cinema),
-        escapeCsv(f.genre),
-        Number(f.rating || 0),
-        escapeCsv(f.review),
-        f.favorite ? "true" : "false",
-        escapeCsv(f.date)
-      ]);
-
-      const csv = [headers.join(","), ...rows.map(row => row.join(","))].join("\n");
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      downloadBlob(blob, "aman-cinema-collection.csv");
-      showToast("📤 CSV exported");
-    }
-
-    function escapeCsv(value) {
-      return `"${String(value ?? "").replace(/"/g, '""')}"`;
-    }
-
-    function downloadBlob(blob, filename) {
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = filename;
-      a.click();
-      URL.revokeObjectURL(a.href);
-    }
-
-    document.getElementById("exportJsonBtn").addEventListener("click", exportJson);
-    document.getElementById("exportCsvBtn").addEventListener("click", exportCsv);
-
-    document.getElementById("importJsonBtn").addEventListener("click", () => {
-      document.getElementById("importFile").click();
+        debounceTimer = setTimeout(() => searchMovies(query), 500);
     });
 
-    document.getElementById("importFile").addEventListener("change", function (event) {
-      const file = event.target.files[0];
-      if (!file) return;
+    async function searchMovies(query) {
+        filmsGrid.innerHTML = '<div class="loading-state">Searching... 🔍</div>';
 
-      const reader = new FileReader();
-      reader.onload = function (e) {
+        if (TMDB_API_KEY === 'YOUR_TMDB_API_KEY_HERE') {
+            filmsGrid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔑</div><h3>API Key Missing!</h3><p>Please paste your TMDB API key in the code.</p></div>';
+            return;
+        }
+
+        const url = `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`;
+
         try {
-          const parsed = JSON.parse(e.target.result);
-          if (!Array.isArray(parsed)) throw new Error("Invalid JSON");
-
-          films = parsed.map(item => ({
-            id: item.id || makeId(),
-            name: item.name || "",
-            language: item.language || "",
-            cinema: item.cinema || "",
-            genre: item.genre || "",
-            poster: item.poster || "",
-            review: item.review || "",
-            rating: Number(item.rating) || 0,
-            favorite: !!item.favorite,
-            date: item.date || new Date().toLocaleDateString("en-IN", {
-              day: "numeric", month: "short", year: "numeric"
-            }),
-            createdAt: item.createdAt || new Date().toISOString()
-          })).filter(f => f.name && f.language && f.cinema);
-
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(films));
-          updateFilters();
-          renderFilms();
-          updateStats();
-          showToast("✅ Import successful");
-        } catch {
-          showToast("❌ Invalid JSON file");
-        } finally {
-          event.target.value = "";
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Network error');
+            const data = await response.json();
+            displayMovies(data.results);
+        } catch (error) {
+            console.error(error);
+            filmsGrid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Oops! Something went wrong.</h3><p>Please try again later.</p></div>';
         }
-      };
-
-      reader.readAsText(file);
-    });
-
-    document.getElementById("clearBtn").addEventListener("click", () => {
-      if (!films.length) return showToast("No films to clear");
-      if (!confirm("Clear all films from your collection?")) return;
-      films = [];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(films));
-      updateFilters();
-      renderFilms();
-      updateStats();
-      showToast("🗑️ Collection cleared");
-    });
-
-    document.getElementById("posterPicker").addEventListener("click", () => {
-      document.getElementById("posterInput").click();
-    });
-
-    document.getElementById("posterInput").addEventListener("change", function (event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        document.getElementById("filmPoster").value = e.target.result;
-        document.getElementById("posterStatus").textContent = "Poster ready";
-      };
-      reader.readAsDataURL(file);
-    });
-
-    searchInput.addEventListener("input", renderFilms);
-    filterLang.addEventListener("change", renderFilms);
-    filterRating.addEventListener("change", renderFilms);
-    sortSelect.addEventListener("change", renderFilms);
-
-    document.getElementById("editModal").addEventListener("click", (event) => {
-      if (event.target.id === "editModal") closeEditModal();
-    });
-
-    if ("beforeinstallprompt" in window) {
-      window.addEventListener("beforeinstallprompt", (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        document.getElementById("installBtn").style.display = "inline-flex";
-      });
-
-      document.getElementById("installBtn").addEventListener("click", async () => {
-        if (!deferredPrompt) return;
-        deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        document.getElementById("installBtn").style.display = "none";
-      });
     }
 
-    renderFilms();
-    updateFilters();
-    updateStats();
-  </script>
+    function displayMovies(movies) {
+        if (!movies || movies.length === 0) {
+            filmsGrid.innerHTML = '<div class="empty-state"><div class="empty-icon">🎞️</div><h3>No movies found</h3><p>Try a different title.</p></div>';
+            return;
+        }
+
+        filmsGrid.innerHTML = '';
+
+        movies.forEach(movie => {
+            const posterUrl = movie.poster_path
+                ? `${IMG_BASE_URL}${movie.poster_path}`
+                : null;
+
+            const card = document.createElement('div');
+            card.className = 'film-card';
+
+            const posterStyle = posterUrl ? `background-image: url('${posterUrl}');` : '';
+            const posterContent = posterUrl ? '' : '🎬';
+
+            card.innerHTML = `
+                <div class="film-poster" style="${posterStyle}">${posterContent}</div>
+                <div class="film-info">
+                    <div class="film-title">${movie.title}</div>
+                    <div class="film-meta">
+                        ${movie.release_date ? movie.release_date.substring(0, 4) : 'N/A'} • ⭐ ${movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}
+                    </div>
+                </div>
+            `;
+            filmsGrid.appendChild(card);
+        });
+    }
+</script>
 </body>
 </html>
+            
