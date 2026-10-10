@@ -3,246 +3,186 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Aman's Cinema | Movie Experience</title>
+<title>Aman's Cinema | Movies, Ratings & Where to Watch</title>
 <style>
     * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter', 'Segoe UI', sans-serif; }
 
     :root {
         --bg:#0a0a0f;
-        --surface:rgda(20, 20, 28, 0.75);
+        --surface:rgba(20, 20, 28, 0.8);
         --surface-solid:#14141c;
         --border:rgba(255, 255, 255, 0.1);
         --text:#f1f1f5;
         --muted:#b8b8c8;
         --gold:#f5b942;
         --red:#e50914;
+        --green:#22c55e;
+        --blue:#38bdf8;
     }
 
-    /* ============================================
-       CINEMA
-       ============================================ */
     body {
-        background-color: #008;
+        background-color: #000;
         color: var(--text);
         min-height: 100vh;
         position: relative;
         overflow-x: hidden;
     }
 
-    /* Fixed cinema background image */
+    /* Cinema Background */
     body::before {
         content: '';
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
         background-image: url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1920&q=80');
-        /* ↑ Yeh Unsplash ki free cinema hall image hai */
         background-size: cover;
         background-position: center;
-        background-repeat: no-repeat;
         z-index: -2;
-        filter: brightness(0.4) saturate(0.9);
-        /* ↑ Image ko dark karta hai taaki text clear dikhe */
+        filter: brightness(0.35) saturate(0.9);
     }
 
-    /* Dark gradient overlay */
     body::after {
         content: '';
         position: fixed;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: 
-            radial-gradient(ellipse at center, rgba(229, 9, 20, 0.15) 0%, transparent 60%),
-            linear-gradient(180deg, rgba(10, 10, 15, 0.7) 0%, rgba(10, 10, 15, 0.95) 100%);
+        background: radial-gradient(ellipse at center, rgba(229, 9, 20, 0.12) 0%, transparent 60%),
+                    linear-gradient(180deg, rgba(10, 10, 15, 0.7) 0%, rgba(10, 10, 15, 0.95) 100%);
         z-index: -1;
         pointer-events: none;
     }
 
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 24px;
-        position: relative;
-        z-index: 1;
-    }
+    .container { max-width: 1300px; margin: 0 auto; padding: 24px; position: relative; z-index: 1; }
 
-    /* ============================================
-       HEADER - Glass effect
-       ============================================ */
+    /* HEADER */
     header {
-        padding: 20px 28px;
+        padding: 18px 28px;
         background: var(--surface);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border: 1px solid var(--border);
         border-radius: 16px;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        gap: 14px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     }
 
-    .logo {
-        font-size: 1.3rem;
-        font-weight: 800;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
+    .logo { font-size: 1.3rem; font-weight: 800; display: flex; align-items: center; gap: 12px; }
     .logo-icon {
-        width: 49px;
-        height: 42px;
-        border-radius: 12px;
+        width: 42px; height: 42px; border-radius: 12px;
         background: linear-gradient(135deg, var(--red), var(--gold));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-        box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4);
     }
-
     .logo-text {
         background: linear-gradient(135deg, var(--red), var(--gold));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
-    .header-right {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-    }
+    .header-right { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
 
-    .stat-badge {
+    .nav-btn {
+        padding: 8px 16px;
+        border-radius: 10px;
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid var(--border);
-        padding: 6px 14px;
-        border-radius: 50px;
-        font-size: 0.8rem;
         color: var(--muted);
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .nav-btn:hover { color: var(--gold); border-color: rgba(245, 185, 66, 0.4); }
+    .nav-btn.active {
+        color: #fff;
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.3), rgba(245, 185, 66, 0.3));
+        border-color: rgba(229, 9, 20, 0.5);
     }
 
-    /* ============================================
-       HERO - Big cinematic title
-       ============================================ */
-    .hero {
-        text-align: center;
-        padding: 50px 20px 60px;
-    }
-
+    /* HERO */
+    .hero { text-align: center; padding: 30px 20px 40px; }
     .hero-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 18px;
-        border-radius: 50px;
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 8px 18px; border-radius: 50px;
         background: rgba(229, 9, 20, 0.15);
         border: 1px solid rgba(229, 9, 20, 0.4);
-        font-size: 0.75rem;
-        color: #ff5c5c;
-        font-weight: 700;
-        letter-spacing: 0.1em;
-        margin-bottom: 20px;
-        text-transform: uppercase;
+        font-size: 0.72rem; color: #ff5c5c; font-weight: 700;
+        letter-spacing: 0.1em; margin-bottom: 18px; text-transform: uppercase;
         backdrop-filter: blur(10px);
     }
-
     .hero h1 {
-        font-size: clamp(2rem, 6vw, 4rem);
-        font-weight: 900;
-        line-height: 1.05;
-        margin-bottom: 18px;
+        font-size: clamp(1.8rem, 5vw, 3.2rem);
+        font-weight: 900; line-height: 1.05; margin-bottom: 14px;
         letter-spacing: -0.02em;
         text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8);
     }
-
     .hero h1 span {
         background: linear-gradient(135deg, var(--red), var(--gold));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         filter: drop-shadow(0 0 30px rgba(245, 185, 66, 0.4));
     }
-
     .hero p {
-        color: var(--muted);
-        max-width: 600px;
-        margin: 0 auto;
-        font-size: 1.05rem;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        color: var(--muted); max-width: 650px; margin: 0 auto;
+        font-size: 1rem; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
 
-    /* ============================================
-       SEARCH BOX - Glass effect
-       ============================================ */
-    .search-box {
-        position: relative;
-        margin-bottom: 40px;
-        max-width: 700px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
+    /* SEARCH */
+    .search-box { position: relative; margin-bottom: 20px; max-width: 750px; margin-left: auto; margin-right: auto; }
     .search-box input {
-        width: 100%;
-        padding: 18px 24px 18px 56px;
+        width: 100%; padding: 16px 20px 16px 54px;
         border-radius: 14px;
-        background: rgba(20, 20, 28, 0.75);
+        background: rgba(20, 20, 28, 0.8);
         backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
         border: 1px solid var(--border);
-        color: var(--text);
-        font-size: 1rem;
-        outline: none;
-        transition: all 0.3s;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        color: var(--text); font-size: 1rem; outline: none;
+        transition: all 0.3s; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     }
-
-    .search-box input:focus {
-        border-color: var(--red);
-        box-shadow: 0 8px 32px rgba(229, 9, 20, 0.3);
-    }
-
-    .search-box input::placeholder {
-        color: var(--muted);
-    }
-
+    .search-box input:focus { border-color: var(--red); box-shadow: 0 8px 32px rgba(229, 9, 20, 0.3); }
+    .search-box input::placeholder { color: var(--muted); }
     .search-box::before {
-        content: '🔍';
-        position: absolute;
-        left: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 1.2rem;
-        opacity: 0.7;
-        z-index: 2;
+        content: '🔍'; position: absolute; left: 20px; top: 50%;
+        transform: translateY(-50%); font-size: 1.15rem; opacity: 0.7; z-index: 2;
     }
 
-    /* ============================================
-       FILMS GRID
-       ============================================ */
+    /* TABS */
+    .tabs {
+        display: flex; gap: 8px; justify-content: center;
+        margin-bottom: 30px; flex-wrap: wrap;
+    }
+    .tab {
+        padding: 10px 22px; border-radius: 50px;
+        background: rgba(20, 20, 28, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border);
+        color: var(--muted); font-size: 0.88rem; font-weight: 600;
+        cursor: pointer; transition: all 0.25s;
+    }
+    .tab:hover { color: var(--gold); border-color: rgba(245, 185, 66, 0.4); }
+    .tab.active {
+        background: linear-gradient(135deg, var(--red), var(--gold));
+        color: #fff; border-color: transparent;
+        box-shadow: 0 6px 20px rgba(229, 9, 20, 0.4);
+    }
+
+    /* FILMS GRID */
     .films-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 24px;
-        margin-bottom: 60px;
+        gap: 24px; margin-bottom: 60px;
     }
 
     .film-card {
-        background: rgba(20, 20, 28, 0.75);
+        background: rgba(20, 20, 28, 0.8);
         backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
         border: 1px solid var(--border);
-        border-radius: 16px;
-        overflow: hidden;
+        border-radius: 16px; overflow: hidden;
         transition: all 0.35s ease;
-        position: relative;
-        display: flex;
-        flex-direction: column;
+        position: relative; display: flex; flex-direction: column;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        cursor: pointer;
     }
-
     .film-card:hover {
         transform: translateY(-8px);
         border-color: rgba(245, 185, 66, 0.5);
@@ -250,104 +190,247 @@
     }
 
     .film-poster {
-        width: 100%;
-        aspect-ratio: 2 / 3;
+        width: 100%; aspect-ratio: 2 / 3;
         background-color: #1a1a24;
-        background-size: cover;
-        background-position: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3rem;
-        opacity: 0.95;
-        position: relative;
+        background-size: cover; background-position: center;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 3rem; position: relative;
+    }
+
+    .rating-badge {
+        position: absolute; top: 10px; right: 10px;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(10px);
+        padding: 5px 10px; border-radius: 8px;
+        font-size: 0.8rem; font-weight: 700; color: var(--gold);
+        border: 1px solid rgba(245, 185, 66, 0.3);
+        z-index: 2;
     }
 
     .film-poster::after {
-        content: '';
-        position: absolute;
-        inset: 0;
+        content: ''; position: absolute; inset: 0;
         background: linear-gradient(to top, rgba(20, 20, 28, 0.9) 0%, transparent 40%);
     }
 
-    .film-info {
-        padding: 18px;
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
+    .film-info { padding: 16px; display: flex; flex-direction: column; flex-grow: 1; }
+    .film-title { font-size: 1rem; font-weight: 700; margin-bottom: 6px; line-height: 1.3; }
+    .film-meta { font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; }
+
+    .film-genres { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+    .genre-tag {
+        font-size: 0.68rem; padding: 3px 9px; border-radius: 5px;
+        background: rgba(124, 92, 255, 0.15);
+        border: 1px solid rgba(124, 92, 255, 0.3);
+        color: #a78bfa; font-weight: 600;
     }
 
-    .film-title {
-        font-size: 1.05rem;
-        font-weight: 700;
-        margin-bottom: 6px;
-        line-height: 1.3;
+    .film-actions {
+        display: flex; gap: 6px; margin-top: auto; padding-top: 10px;
+        border-top: 1px solid var(--border);
     }
 
-    .film-meta {
-        font-size: 0.82rem;
-        color: var(--muted);
-        margin-bottom: 8px;
+    .action-btn {
+        flex: 1; padding: 8px; border-radius: 8px;
+        border: 1px solid var(--border); background: transparent;
+        color: var(--muted); font-size: 0.75rem; font-weight: 600;
+        cursor: pointer; transition: all 0.2s;
+        display: flex; align-items: center; justify-content: center; gap: 4px;
     }
+    .action-btn:hover { background: rgba(255, 255, 255, 0.05); color: var(--text); }
+    .action-btn.watch:hover { color: var(--green); border-color: rgba(34, 197, 94, 0.4); }
+    .action-btn.info:hover { color: var(--blue); border-color: rgba(56, 189, 248, 0.4); }
 
-    /* ============================================
-       STATES (loading, empty)
-       ============================================ */
+    /* STATES */
     .loading-state, .empty-state {
-        text-align: center;
-        padding: 80px 20px;
-        color: var(--muted);
+        text-align: center; padding: 70px 20px; color: var(--muted);
         grid-column: 1 / -1;
-        background: rgba(20, 20, 28, 0.6);
+        background: rgba(20, 20, 28, 0.7);
         backdrop-filter: blur(20px);
-        border: 1px solid var(--border);
-        border-radius: 20px;
+        border: 1px solid var(--border); border-radius: 20px;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     }
+    .empty-icon { font-size: 3.2rem; margin-bottom: 14px; opacity: 0.6; }
+    .empty-state h3 { font-size: 1.25rem; margin-bottom: 8px; color: var(--text); }
 
-    .empty-icon {
-        font-size: 3.5rem;
-        margin-bottom: 16px;
-        opacity: 0.6;
+    /* MODAL */
+    .modal-overlay {
+        position: fixed; inset: 0;
+        background: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(10px);
+        display: none; align-items: center; justify-content: center;
+        z-index: 1000; padding: 20px; overflow-y: auto;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+        background: var(--surface-solid);
+        border: 1px solid var(--border);
+        border-radius: 20px; padding: 0;
+        max-width: 850px; width: 100%;
+        max-height: 90vh; overflow-y: auto;
+        position: relative;
+        animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    .empty-state h3 {
-        font-size: 1.3rem;
-        margin-bottom: 8px;
+    .modal-close {
+        position: absolute; top: 16px; right: 16px;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid var(--border);
+        color: #fff; width: 36px; height: 36px;
+        border-radius: 50%; font-size: 1.1rem; cursor: pointer;
+        z-index: 10; display: flex; align-items: center; justify-content: center;
+    }
+    .modal-close:hover { color: var(--red); border-color: rgba(229, 9, 20, 0.5); }
+
+    .modal-hero {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 28px; padding: 32px;
+        position: relative;
+    }
+
+    .modal-poster {
+        width: 100%; aspect-ratio: 2 / 3;
+        border-radius: 14px;
+        background-size: cover; background-position: center;
+        background-color: #1a1a24;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 3rem;
+    }
+
+    .modal-content h2 {
+        font-size: 1.9rem; margin-bottom: 8px;
+        line-height: 1.2;
+    }
+    .modal-tagline {
+        color: var(--muted); font-style: italic;
+        margin-bottom: 16px; font-size: 0.95rem;
+    }
+
+    .modal-rating-row {
+        display: flex; gap: 12px; flex-wrap: wrap;
+        margin-bottom: 18px;
+    }
+    .rating-chip {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 6px 14px; border-radius: 50px;
+        background: rgba(245, 185, 66, 0.12);
+        border: 1px solid rgba(245, 185, 66, 0.3);
+        color: var(--gold); font-weight: 700; font-size: 0.85rem;
+    }
+    .rating-chip.blue {
+        background: rgba(56, 189, 248, 0.12);
+        border-color: rgba(56, 189, 248, 0.3);
+        color: var(--blue);
+    }
+    .rating-chip.green {
+        background: rgba(34, 197, 94, 0.12);
+        border-color: rgba(34, 197, 94, 0.3);
+        color: var(--green);
+    }
+
+    .modal-section { margin-bottom: 18px; }
+    .modal-section-title {
+        font-size: 0.72rem; color: var(--muted);
+        text-transform: uppercase; letter-spacing: 0.1em;
+        font-weight: 700; margin-bottom: 8px;
+    }
+    .modal-section-text {
+        font-size: 0.92rem; line-height: 1.6;
         color: var(--text);
     }
 
-    /* ============================================
-       FOOTER
-       ============================================ */
+    .cast-list {
+        display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .cast-chip {
+        padding: 6px 12px; border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        font-size: 0.82rem; color: var(--text);
+    }
+    .cast-chip strong { color: var(--gold); font-weight: 700; display: block; font-size: 0.85rem; }
+    .cast-chip span { color: var(--muted); font-size: 0.75rem; }
+
+    .platform-list {
+        display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .platform-chip {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 8px 14px; border-radius: 10px;
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.15), rgba(245, 185, 66, 0.1));
+        border: 1px solid rgba(229, 9, 20, 0.3);
+        font-size: 0.82rem; font-weight: 600; color: var(--text);
+        text-decoration: none; transition: all 0.2s;
+    }
+    .platform-chip:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* HELP SECTION */
+    .help-box {
+        background: rgba(20, 20, 28, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 32px;
+        margin-bottom: 40px;
+    }
+    .help-box h2 { font-size: 1.5rem; margin-bottom: 20px; }
+    .help-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+    }
+    .help-card {
+        padding: 22px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        transition: all 0.2s;
+    }
+    .help-card:hover { border-color: rgba(245, 185, 66, 0.4); }
+    .help-icon {
+        width: 44px; height: 44px; border-radius: 12px;
+        background: linear-gradient(135deg, rgba(229, 9, 20, 0.2), rgba(245, 185, 66, 0.2));
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.3rem; margin-bottom: 14px;
+    }
+    .help-card h3 { font-size: 1.05rem; margin-bottom: 8px; }
+    .help-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+    /* FOOTER */
     footer {
-        text-align: center;
-        padding: 30px 0;
-        color: var(--muted);
-        font-size: 0.85rem;
+        text-align: center; padding: 30px 0;
+        color: var(--muted); font-size: 0.85rem;
         text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
-
     footer span {
         background: linear-gradient(135deg, var(--red), var(--gold));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         font-weight: 700;
     }
 
-    /* ============================================
-       RESPONSIVE
-       ============================================ */
-    @media (max-width: 640px) {
-        .container { padding: 16px; }
-        header { padding: 16px 20px; }
-        .logo { font-size: 1.1rem; }
-        .logo-icon { width: 36px; height: 36px; }
-        .films-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
-        .film-info { padding: 14px; }
-        .film-title { font-size: 0.95rem; }
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+        .modal-hero { grid-template-columns: 1fr; padding: 20px; }
+        .modal-poster { max-width: 220px; margin: 0 auto; }
+        .modal-content h2 { font-size: 1.5rem; }
     }
+
+    @media (max-width: 640px) {
+        .container { padding: 14px; }
+        header { padding: 14px 18px; }
+        .films-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+        .film-info { padding: 12px; }
+        .film-title { font-size: 0.9rem; }
+        .nav-btn { padding: 6px 12px; font-size: 0.78rem; }
+    }
+
+    .hidden { display: none !important; }
 </style>
 </head>
 <body>
@@ -360,20 +443,99 @@
             <div class="logo-text">Aman's Cinema</div>
         </div>
         <div class="header-right">
-            <div class="stat-badge">🎞️ Powered by TMDB</div>
+            <button class="nav-btn active" onclick="switchTab('search', this)">🔍 Search</button>
+            <button class="nav-btn" onclick="switchTab('trending', this)">🔥 Trending</button>
+            <button class="nav-btn" onclick="switchTab('top', this)">⭐ Top Rated</button>
+            <button class="nav-btn" onclick="switchTab('help', this)">❓ Help</button>
         </div>
     </header>
 
-    <!-- HERO -->
-    <section class="hero">
-        <div class="hero-badge">🍿 Now Showing</div>
-        <h1>Find Your Next <span>Favorite Film</span></h1>
-        <p>Search any movie and discover its poster, rating, and details — right from the comfort of your cinema seat.</p>
-    </section>
+    <!-- SEARCH VIEW -->
+    <div id="searchView">
+        <section class="hero">
+            <div class="hero-badge">🍿 Now Showing</div>
+            <h1>Find Your Next <span>Favorite Film</span></h1>
+            <p>Search any movie and discover poster, rating, actors, director, and where to watch it online.</p>
+        </section>
 
-    <!-- SEARCH -->
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Search for a movie... (e.g., Inception, Interstellar)">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search for a movie... (e.g., Inception, Interstellar)">
+        </div>
+    </div>
+
+    <!-- TRENDING / TOP RATED VIEW -->
+    <div id="trendingView" class="hidden">
+        <section class="hero">
+            <div class="hero-badge">🔥 What's Hot</div>
+            <h1>Trending <span>This Week</span></h1>
+            <p>The most popular movies right now — click any poster for full details.</p>
+        </section>
+    </div>
+
+    <!-- HELP VIEW -->
+    <div id="helpView" class="hidden">
+        <section class="hero">
+            <div class="hero-badge">❓ Help Center</div>
+            <h1>How Can We <span>Help You?</span></h1>
+            <p>Everything you need to know about Aman's Cinema.</p>
+        </section>
+
+        <div class="help-box">
+            <h2>📖 Quick Guide</h2>
+            <div class="help-grid">
+                <div class="help-card">
+                    <div class="help-icon">🔍</div>
+                    <h3>Search Movies</h3>
+                    <p>Type any movie name in the search bar. You'll see the poster, rating, year, and genre instantly.</p>
+                </div>
+                <div class="help-card">
+                    <div class="help-icon">⭐</div>
+                    <h3>See Ratings</h3>
+                    <p>Every movie shows a TMDB rating (out of 10), total vote count, and popularity score.</p>
+                </div>
+                <div class="help-card">
+                    <div class="help-icon">👥</div>
+                    <h3>Cast & Crew</h3>
+                    <p>Click any movie to see the director, main actors, genres, runtime, and full plot summary.</p>
+                </div>
+                <div class="help-card">
+                    <div class="help-icon">📺</div>
+                    <h3>Where to Watch</h3>
+                    <p>See which platforms (Netflix, Prime, Disney+, etc.) have the movie. Click a platform to search directly.</p>
+                </div>
+                <div class="help-card">
+                    <div class="help-icon">🔥</div>
+                    <h3>Trending Tab</h3>
+                    <p>See what's popular this week. Updated automatically from TMDB's trending list.</p>
+                </div>
+                <div class="help-card">
+                    <div class="help-icon">⭐</div>
+                    <h3>Top Rated Tab</h3>
+                    <p>Browse the highest-rated movies of all time — perfect for finding masterpieces.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="help-box">
+            <h2>❓ Frequently Asked Questions</h2>
+            <div class="help-grid">
+                <div class="help-card">
+                    <div class="help-icon">🎬</div>
+                    <h3>Can I watch movies here?</h3>
+                    <p>No — this is a discovery website. We show you where you CAN watch (Netflix, Prime, etc.).</p>
+                </div>
+                <div class="help-card">
+                    <div class="help-icon">🌐</div>
+                    <h3>Where does data come from?</h3>
+                    <p>All movie data, posters, and ratings come from TMDB (The Movie Database) — a free, public API.</p>
+                </div>
+                <div class="help-card">
+                    <div class="help-icon">💾</div>
+                    <h3>Is my data saved?</h3>
+                    <p>No personal data is stored. Search history is not saved anywhere.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- FILMS GRID -->
@@ -383,8 +545,59 @@
 
     <!-- FOOTER -->
     <footer>
-        Made with ❤️ by <span>Aman Mirza</span> • © 2024
+        Made with ❤️ by <span>Aman Mirza</span> • Powered by TMDB • © 2024
     </footer>
+</div>
+
+<!-- MOVIE DETAILS MODAL -->
+<div class="modal-overlay" id="movieModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div class="modal-hero">
+            <div class="modal-poster" id="modalPoster">🎬</div>
+            <div class="modal-content">
+                <h2 id="modalTitle">Movie Title</h2>
+                <p class="modal-tagline" id="modalTagline"></p>
+
+                <div class="modal-rating-row">
+                    <div class="rating-chip">⭐ <span id="modalRating">0.0</span>/10</div>
+                    <div class="rating-chip blue">👥 <span id="modalVotes">0</span> votes</div>
+                    <div class="rating-chip green">⏱️ <span id="modalRuntime">0</span> min</div>
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">Overview</div>
+                    <p class="modal-section-text" id="modalOverview">No description available.</p>
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">Director</div>
+                    <div class="cast-list" id="modalDirector">
+                        <span class="cast-chip">Loading...</span>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">Main Cast</div>
+                    <div class="cast-list" id="modalCast">
+                        <span class="cast-chip">Loading...</span>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">Genres</div>
+                    <div class="cast-list" id="modalGenres"></div>
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">Where to Watch</div>
+                    <div class="platform-list" id="modalPlatforms">
+                        <span class="cast-chip">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -397,9 +610,37 @@
     const searchInput = document.getElementById('searchInput');
     const filmsGrid = document.getElementById('filmsGrid');
     const IMG_BASE_URL = 'https://image.tmdb.org/t/p/w500';
+    const IMG_ORIGINAL = 'https://image.tmdb.org/t/p/original';
 
     let debounceTimer;
+    let currentTab = 'search';
 
+    // ============================================
+    // TAB SWITCHING
+    // ============================================
+    function switchTab(tab, btn) {
+        currentTab = tab;
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        document.getElementById('searchView').classList.toggle('hidden', tab !== 'search');
+        document.getElementById('trendingView').classList.toggle('hidden', tab !== 'trending');
+        document.getElementById('helpView').classList.toggle('hidden', tab !== 'help');
+
+        if (tab === 'search') {
+            filmsGrid.innerHTML = '<div class="loading-state">Type a movie name to start exploring... 🍿</div>';
+        } else if (tab === 'trending') {
+            loadTrending();
+        } else if (tab === 'top') {
+            loadTopRated();
+        } else if (tab === 'help') {
+            filmsGrid.innerHTML = '';
+        }
+    }
+
+    // ============================================
+    // SEARCH
+    // ============================================
     searchInput.addEventListener('input', () => {
         clearTimeout(debounceTimer);
         const query = searchInput.value.trim();
@@ -412,25 +653,54 @@
 
     async function searchMovies(query) {
         filmsGrid.innerHTML = '<div class="loading-state">Searching... 🔍</div>';
-
-        if (TMDB_API_KEY === 'YOUR_TMDB_API_KEY_HERE') {
-            filmsGrid.innerHTML = '<div class="empty-state"><div class="empty-icon">🔑</div><h3>API Key Missing!</h3><p>Please paste your TMDB API key in the code.</p></div>';
-            return;
-        }
+        if (!checkApiKey()) return;
 
         const url = `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`;
 
         try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error('Network error');
-            const data = await response.json();
+            const res = await fetch(url);
+            const data = await res.json();
             displayMovies(data.results);
-        } catch (error) {
-            console.error(error);
-            filmsGrid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Oops! Something went wrong.</h3><p>Please try again later.</p></div>';
+        } catch (err) {
+            filmsGrid.innerHTML = '<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Something went wrong</h3><p>Please try again.</p></div>';
         }
     }
 
+    // ============================================
+    // TRENDING
+    // ============================================
+    async function loadTrending() {
+        filmsGrid.innerHTML = '<div class="loading-state">Loading trending movies... 🔥</div>';
+        if (!checkApiKey()) return;
+
+        try {
+            const res = await fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_API_KEY}`);
+            const data = await res.json();
+            displayMovies(data.results);
+        } catch (err) {
+            filmsGrid.innerHTML = '<div class="empty-state"><h3>Could not load trending</h3></div>';
+        }
+    }
+
+    // ============================================
+    // TOP RATED
+    // ============================================
+    async function loadTopRated() {
+        filmsGrid.innerHTML = '<div class="loading-state">Loading top rated movies... ⭐</div>';
+        if (!checkApiKey()) return;
+
+        try {
+            const res = await fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${TMDB_API_KEY}&language=en-US&page=1`);
+            const data = await res.json();
+            displayMovies(data.results);
+        } catch (err) {
+            filmsGrid.innerHTML = '<div class="empty-state"><h3>Could not load top rated</h3></div>';
+        }
+    }
+
+    // ============================================
+    // DISPLAY MOVIES
+    // ============================================
     function displayMovies(movies) {
         if (!movies || movies.length === 0) {
             filmsGrid.innerHTML = '<div class="empty-state"><div class="empty-icon">🎞️</div><h3>No movies found</h3><p>Try a different title.</p></div>';
@@ -440,29 +710,23 @@
         filmsGrid.innerHTML = '';
 
         movies.forEach(movie => {
-            const posterUrl = movie.poster_path
-                ? `${IMG_BASE_URL}${movie.poster_path}`
-                : null;
+            const posterUrl = movie.poster_path ? `${IMG_BASE_URL}${movie.poster_path}` : null;
+            const rating = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
+            const year = movie.release_date ? movie.release_date.substring(0, 4) : 'N/A';
 
             const card = document.createElement('div');
             card.className = 'film-card';
-
-            const posterStyle = posterUrl ? `background-image: url('${posterUrl}');` : '';
-            const posterContent = posterUrl ? '' : '🎬';
+            card.onclick = () => openMovieDetails(movie.id);
 
             card.innerHTML = `
-                <div class="film-poster" style="${posterStyle}">${posterContent}</div>
+                <div class="film-poster" style="${posterUrl ? `background-image:url('${posterUrl}');` : ''}">
+                    ${posterUrl ? '' : '🎬'}
+                    <div class="rating-badge">⭐ ${rating}</div>
+                </div>
                 <div class="film-info">
                     <div class="film-title">${movie.title}</div>
-                    <div class="film-meta">
-                        ${movie.release_date ? movie.release_date.substring(0, 4) : 'N/A'} • ⭐ ${movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A'}
-                    </div>
-                </div>
-            `;
-            filmsGrid.appendChild(card);
-        });
-    }
-</script>
-</body>
-</html>
+                    <div class="film-meta">${year} • ${movie.original_language ? movie.original_language.toUpperCase() : 'N/A'}</div>
+                    <div class="film-actions">
+                        <button class="action-btn info" onclick="event.stopPropagation(); openMovieDetails(${movie.id})">ℹ️ Details</button>
+                        <button class
             
