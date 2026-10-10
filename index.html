@@ -761,8 +761,6 @@
   color: var(--gold);
   font-size: 0.9rem;
 }
-<section class="add-section account-section" id="account" aria-labelledby="account-title">
-  <h2 class="form-title" id="account-title">Create your account</h2>
 
   <form id="account-form">
     <div class="form-grid">
@@ -871,30 +869,8 @@ accountForm.addEventListener("submit", async (event) => {
     placeholder="https://www.youtube.com/watch?v=..."
   >
 </div>
-function safeYouTubeUrl(value) {
-  if (!value) return "";
-
-  try {
-    const url = new URL(value);
-    const allowedHosts = ["youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be"];
-
-    if (url.protocol !== "https:" || !allowedHosts.includes(url.hostname)) {
-      return "";
-    }
-
-    return url.href;
-  } catch {
-    return "";
-  }
+    
 }
-youtube: safeYouTubeUrl(String(formData.get("youtube")).trim()),
-const youtubeUrl = safeYouTubeUrl(film.youtube);
-if (youtubeUrl) {
-  const link = createElement("a", "youtube-link", "▶ Watch on YouTube");
-  link.href = youtubeUrl;
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  content.append(link);
 }
 .youtube-link {
   display: inline-block;
@@ -905,8 +881,4 @@ if (youtubeUrl) {
   text-decoration: none;
 }
 
-.youtube-link:hover {
-  color: var(--gold);
-  text-decoration: underline;
-}
 
