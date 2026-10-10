@@ -1,282 +1,1057 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meet Aman Rekhta | Portfolio</title>
-    <style>
-        /* --- Global Styles & Variables --- */
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --accent-hover: #0ea5e9;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aman Mirza | Films Collection</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter','Segoe UI',sans-serif; }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+:root {
+  --bg:#0a0a0f;
+  --surface:#14141c;
+  --surface-2:#1a1a24;
+  --border:#26263a;
+  --text:#f1f1f5;
+  --muted:#8b8ba7;
+  --gold:#f5b942;
+  --red:#e50914;
+  --green:#22c55e;
+}
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-        }
+body {
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  min-height:100vh;
+  overflow-x:hidden;
+}
 
-        a {
-            text-decoration: none;
-            color: var(--accent);
-            transition: color 0.3s ease;
-        }
+body::before {
+  content:'';
+  position:fixed;
+  top:-300px; left:50%;
+  transform:translateX(-50%);
+  width:900px; height:900px;
+  background:radial-gradient(circle, rgba(229,9,20,0.12) 0%, transparent 70%);
+  pointer-events:none;
+  z-index:0;
+}
 
-        a:hover {
-            color: var(--accent-hover);
-        }
+.container {
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px;
+  position:relative;
+  z-index:1;
+}
 
-        /* --- Layout Container --- */
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+/* HEADER */
+header {
+  padding:28px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid var(--border);
+  margin-bottom:40px;
+  flex-wrap:wrap;
+  gap:16px;
+}
 
-        /* --- Hero Section --- */
-        header {
-            min-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 50px;
-        }
+.logo {
+  font-size:1.3rem;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
 
-        .hero-greeting {
-            color: var(--accent);
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
+.logo-icon {
+  width:40px; height:40px;
+  border-radius:10px;
+  background:linear-gradient(135deg, var(--red), var(--gold));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:1.2rem;
+}
 
-        .hero-title {
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 15px;
-        }
+.logo-text {
+  background:linear-gradient(135deg, var(--red), var(--gold));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
 
-        .hero-subtitle {
-            font-size: clamp(1.2rem, 4vw, 1.8rem);
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            max-width: 600px;
-        }
+.header-badge {
+  background:var(--surface);
+  border:1px solid var(--border);
+  padding:8px 16px;
+  border-radius:50px;
+  font-size:0.82rem;
+  color:var(--muted);
+}
 
-        .btn {
-            display: inline-block;
-            background-color: transparent;
-            color: var(--accent);
-            border: 2px solid var(--accent);
-            padding: 12px 28px;
-            border-radius: 5px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+.header-badge strong { color:var(--gold); }
 
-        .btn:hover {
-            background-color: var(--accent);
-            color: var(--bg-color);
-        }
+/* HERO */
+.hero {
+  text-align:center;
+  padding:30px 0 50px;
+}
 
-        /* --- Section Styling --- */
-        section {
-            padding: 80px 0;
-        }
+.hero-badge {
+  display:inline-block;
+  padding:6px 16px;
+  border-radius:50px;
+  background:rgba(229,9,20,0.1);
+  border:1px solid rgba(229,9,20,0.3);
+  font-size:0.75rem;
+  color:var(--red);
+  font-weight:700;
+  letter-spacing:0.08em;
+  margin-bottom:18px;
+  text-transform:uppercase;
+}
 
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 40px;
-            position: relative;
-            display: inline-block;
-        }
+.hero h1 {
+  font-size:clamp(2rem, 5vw, 3.5rem);
+  font-weight:800;
+  line-height:1.1;
+  margin-bottom:14px;
+}
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 60%;
-            height: 3px;
-            background-color: var(--accent);
-            border-radius: 2px;
-        }
+.hero h1 span {
+  background:linear-gradient(135deg, var(--red), var(--gold));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
 
-        /* --- About Section --- */
-        .about-text {
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            max-width: 800px;
-        }
+.hero p {
+  color:var(--muted);
+  max-width:600px;
+  margin:0 auto;
+}
 
-        .about-text p {
-            margin-bottom: 15px;
-        }
+/* STATS */
+.stats-bar {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+  gap:16px;
+  margin-bottom:40px;
+}
 
-        /* --- Projects Grid --- */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
+.stat-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:20px;
+  text-align:center;
+  transition:all 0.3s;
+}
 
-        .project-card {
-            background-color: var(--card-bg);
-            padding: 30px;
-            border-radius: 10px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+.stat-card:hover {
+  border-color:rgba(245,185,66,0.4);
+  transform:translateY(-3px);
+}
 
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
+.stat-value {
+  font-size:1.8rem;
+  font-weight:800;
+  background:linear-gradient(135deg, var(--red), var(--gold));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
 
-        .project-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-        }
+.stat-label {
+  font-size:0.72rem;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+  margin-top:4px;
+}
 
-        .project-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-        }
+/* ADD FORM */
+.add-section {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:32px;
+  margin-bottom:40px;
+  position:relative;
+  overflow:hidden;
+}
 
-        .tech-stack {
-            font-size: 0.85rem;
-            color: var(--accent);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-        }
+.add-section::before {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:3px;
+  background:linear-gradient(90deg, var(--red), var(--gold));
+}
 
-        /* --- Footer / Contact --- */
-        footer {
-            text-align: center;
-            padding: 60px 0 40px;
-            border-top: 1px solid #334155;
-        }
+.form-title {
+  font-size:1.2rem;
+  font-weight:700;
+  margin-bottom:24px;
+}
 
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 25px;
-            margin-bottom: 20px;
-        }
+.form-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+  gap:16px;
+  margin-bottom:16px;
+}
 
-        .social-links a {
-            color: var(--text-muted);
-            font-size: 1rem;
-            font-weight: 500;
-        }
+.form-grid.full { grid-template-columns:1fr; }
 
-        .social-links a:hover {
-            color: var(--accent);
-        }
+.input-group {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
 
-        .copyright {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-    </style>
+.input-group label {
+  font-size:0.72rem;
+  color:var(--muted);
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+
+.input-group input,
+.input-group textarea {
+  padding:11px 14px;
+  border-radius:10px;
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  color:var(--text);
+  font-size:0.9rem;
+  outline:none;
+  transition:all 0.2s;
+  font-family:inherit;
+}
+
+.input-group textarea {
+  resize:vertical;
+  min-height:70px;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+  border-color:var(--red);
+  box-shadow:0 0 0 3px rgba(229,9,20,0.1);
+}
+
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+  color:#55556a;
+}
+
+/* STAR RATING */
+.star-input {
+  display:flex;
+  gap:6px;
+  padding:8px 0;
+}
+
+.star-input .star {
+  font-size:1.6rem;
+  cursor:pointer;
+  color:#33334a;
+  transition:all 0.2s;
+  user-select:none;
+}
+
+.star-input .star.active { color:var(--gold); }
+.star-input .star:hover { color:var(--gold); transform:scale(1.1); }
+
+/* BUTTONS */
+.btn {
+  padding:13px 24px;
+  border-radius:10px;
+  border:none;
+  font-size:0.95rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.25s;
+  font-family:inherit;
+}
+
+.btn-primary {
+  background:linear-gradient(135deg, var(--red), var(--gold));
+  color:#fff;
+  width:100%;
+}
+
+.btn-primary:hover {
+  transform:translateY(-2px);
+  box-shadow:0 10px 30px rgba(229,9,20,0.3);
+}
+
+/* CONTROLS */
+.controls {
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:12px;
+  margin-bottom:30px;
+}
+
+@media (max-width:700px) {
+  .controls { grid-template-columns:1fr; }
+}
+
+.search-box { position:relative; }
+
+.search-box input {
+  width:100%;
+  padding:13px 16px 13px 44px;
+  border-radius:10px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  color:var(--text);
+  font-size:0.95rem;
+  outline:none;
+}
+
+.search-box input:focus { border-color:var(--red); }
+
+.search-box::before {
+  content:'🔍';
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:1rem;
+  opacity:0.6;
+}
+
+.filter-select {
+  padding:13px 16px;
+  border-radius:10px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  color:var(--text);
+  font-size:0.9rem;
+  outline:none;
+  cursor:pointer;
+  font-family:inherit;
+}
+
+.filter-select:focus { border-color:var(--red); }
+
+/* FILMS */
+.films-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+  gap:12px;
+}
+
+.films-header h2 {
+  font-size:1.3rem;
+  font-weight:700;
+}
+
+.films-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+  gap:22px;
+  margin-bottom:60px;
+}
+
+.film-card {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  position:relative;
+  transition:all 0.3s ease;
+  animation:fadeIn 0.4s ease;
+  display:flex;
+  flex-direction:column;
+}
+
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(12px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.film-card:hover {
+  transform:translateY(-6px);
+  border-color:rgba(229,9,20,0.4);
+  box-shadow:0 18px 40px rgba(0,0,0,0.4);
+}
+
+.film-poster {
+  width:100%;
+  height:260px;
+  background:linear-gradient(135deg, #1a1a24, #0f0f18);
+  background-size:cover;
+  background-position:center;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:3rem;
+}
+
+.film-poster::after {
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, var(--surface) 0%, transparent 60%);
+}
+
+.film-body {
+  padding:20px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+}
+
+.film-title {
+  font-size:1.15rem;
+  font-weight:700;
+  margin-bottom:10px;
+  line-height:1.3;
+}
+
+.film-stars {
+  display:flex;
+  gap:2px;
+  margin-bottom:12px;
+  font-size:0.95rem;
+}
+
+.film-stars .filled { color:var(--gold); }
+.film-stars .empty { color:#33334a; }
+
+.film-meta {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-bottom:12px;
+}
+
+.badge {
+  display:inline-block;
+  padding:3px 10px;
+  border-radius:6px;
+  font-size:0.72rem;
+  font-weight:600;
+}
+
+.badge-lang {
+  background:rgba(124,92,255,0.15);
+  border:1px solid rgba(124,92,255,0.3);
+  color:#a78bfa;
+}
+
+.badge-cinema {
+  background:rgba(245,185,66,0.15);
+  border:1px solid rgba(245,185,66,0.3);
+  color:var(--gold);
+}
+
+.badge-genre {
+  background:rgba(34,197,94,0.15);
+  border:1px solid rgba(34,197,94,0.3);
+  color:var(--green);
+}
+
+.film-review {
+  font-size:0.85rem;
+  color:var(--muted);
+  margin-bottom:12px;
+  flex:1;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.film-date {
+  font-size:0.72rem;
+  color:#55556a;
+  margin-top:8px;
+}
+
+.film-actions {
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid var(--border);
+}
+
+.action-btn {
+  flex:1;
+  padding:8px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:transparent;
+  color:var(--muted);
+  font-size:0.8rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.2s;
+  font-family:inherit;
+}
+
+.action-btn:hover {
+  background:var(--surface-2);
+  color:var(--text);
+}
+
+.action-btn.edit:hover {
+  color:var(--gold);
+  border-color:rgba(245,185,66,0.4);
+}
+
+.action-btn.delete:hover {
+  color:var(--red);
+  border-color:rgba(229,9,20,0.4);
+}
+
+/* EMPTY */
+.empty-state {
+  text-align:center;
+  padding:80px 20px;
+  color:var(--muted);
+  grid-column:1/-1;
+}
+
+.empty-icon {
+  font-size:3.5rem;
+  margin-bottom:16px;
+  opacity:0.5;
+}
+
+.empty-state h3 {
+  font-size:1.2rem;
+  margin-bottom:8px;
+  color:var(--text);
+}
+
+/* MODAL */
+.modal-overlay {
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(6px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+  padding:20px;
+}
+
+.modal-overlay.active { display:flex; }
+
+.modal {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:32px;
+  max-width:500px;
+  width:100%;
+  max-height:90vh;
+  overflow-y:auto;
+  position:relative;
+}
+
+.modal h2 {
+  font-size:1.4rem;
+  margin-bottom:20px;
+}
+
+.modal-close {
+  position:absolute;
+  top:16px;
+  right:16px;
+  background:transparent;
+  border:none;
+  color:var(--muted);
+  font-size:1.5rem;
+  cursor:pointer;
+  padding:4px 8px;
+  border-radius:6px;
+}
+
+.modal-close:hover { color:var(--red); }
+
+.modal .input-group { margin-bottom:14px; }
+
+/* TOAST */
+.toast {
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%) translateY(100px);
+  background:var(--surface);
+  border:1px solid var(--green);
+  padding:14px 24px;
+  border-radius:12px;
+  color:var(--text);
+  font-size:0.9rem;
+  font-weight:600;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5);
+  z-index:2000;
+  opacity:0;
+  transition:all 0.3s ease;
+}
+
+.toast.show {
+  transform:translateX(-50%) translateY(0);
+  opacity:1;
+}
+
+/* FOOTER */
+footer {
+  padding:40px 0;
+  text-align:center;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+  font-size:0.85rem;
+}
+
+footer span {
+  background:linear-gradient(135deg, var(--red), var(--gold));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  font-weight:700;
+}
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- HERO SECTION -->
-        <header>
-            <p class="hero-greeting">Hi, my name is</p>
-            <h1 class="hero-title">Meet Aman Rekhta.</h1>
-            <h2 class="hero-subtitle">I build things for the web.</h2>
-            <p class="hero-subtitle" style="font-size: 1.1rem; margin-bottom: 40px;">
-                I'm a developer focused on building clean, responsive, and user-friendly digital experiences.
-            </p>
-            <a href="#projects" class="btn">View My Work</a>
-        </header>
+<div class="container">
 
-        <!-- ABOUT SECTION -->
-        <section id="about">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-text">
-                <p>
-                    Hello! I'm Meet, a passionate developer who enjoys creating things that live on the internet. 
-                    My interest in web development started back when I decided to try editing custom themes — turns out 
-                    hacking together a custom website taught me a lot about HTML & CSS!
-                </p>
-                <p>
-                    Fast-forward to today, I've had the privilege of working on various personal projects and 
-                    continuously learning new technologies. My main focus these days is building accessible, 
-                    inclusive products and digital experiences for a variety of clients.
-                </p>
-                <p>Here are a few technologies I've been working with recently:</p>
-                <ul style="list-style: none; display: grid; grid-template-columns: repeat(2, minmax(140px, 200px)); gap: 10px; margin-top: 15px; color: var(--text-muted);">
-                    <li>▹ HTML5 & CSS3</li>
-                    <li>▹ JavaScript</li>
-                    <li>▹ GitHub & Git</li>
-                    <li>▹ Responsive Design</li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- PROJECTS SECTION -->
-        <section id="projects">
-            <h2 class="section-title">Some Things I've Built</h2>
-            <div class="projects-grid">
-                
-                <!-- Project 1 -->
-                <div class="project-card">
-                    <h3>Personal Website</h3>
-                    <p>A clean, fully responsive personal portfolio website built from scratch and hosted on GitHub Pages.</p>
-                    <p class="tech-stack">HTML • CSS • GitHub Pages</p>
-                </div>
-
-                <!-- Project 2 -->
-                <div class="project-card">
-                    <h3>Project Two</h3>
-                    <p>A web application that allows users to track their daily tasks and manage their time efficiently.</p>
-                    <p class="tech-stack">JavaScript • API • CSS</p>
-                </div>
-
-                <!-- Project 3 -->
-                <div class="project-card">
-                    <h3>Project Three</h3>
-                    <p>A simple, beautifully designed landing page for a fictional startup, focusing on modern UI/UX principles.</p>
-                    <p class="tech-stack">HTML • CSS • Figma</p>
-                </div>
-
-            </div>
-        </section>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🎬</div>
+      <div class="logo-text">Aman Mirza | Films</div>
     </div>
+    <div class="header-badge">🎞️ <strong id="headerCount">0</strong> Films</div>
+  </header>
 
-    <!-- FOOTER / CONTACT -->
-    <footer>
-        <div class="container">
-            <h2 style="font-size: 1.5rem; margin-bottom: 20px;">Let's Connect</h2>
-            <div class="social-links">
-                <!-- Replace # with your actual links -->
-                <a href="#" target="_blank">GitHub</a>
-                <a href="#" target="_blank">LinkedIn</a>
-                <a href="#" target="_blank">Twitter</a>
-                <a href="mailto:your.email@example.com">Email</a>
-            </div>
-            <p class="copyright">Designed & Built by Meet Aman Rekhta &copy; 2024</p>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">🎥 My Film Collection</div>
+    <h1>My Films <span>Collection</span></h1>
+    <p>Track every film you watch — with rating, review, and where you saw it.</p>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-value" id="statTotal">0</div>
+      <div class="stat-label">Total Films</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statAvg">0.0</div>
+      <div class="stat-label">Avg Rating</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statLangs">0</div>
+      <div class="stat-label">Languages</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statTop">—</div>
+      <div class="stat-label">Top Rated</div>
+    </div>
+  </div>
+
+  <!-- ADD FORM -->
+  <section class="add-section">
+    <div class="form-title">➕ Add a New Film</div>
+    <form id="filmForm">
+      <div class="form-grid">
+        <div class="input-group">
+          <label>Film Name *</label>
+          <input type="text" id="filmName" placeholder="e.g. Interstellar" required>
         </div>
-    </footer>
+        <div class="input-group">
+          <label>Language *</label>
+          <input type="text" id="filmLang" placeholder="e.g. English" required>
+        </div>
+        <div class="input-group">
+          <label>Cinema / Platform *</label>
+          <input type="text" id="filmCinema" placeholder="e.g. PVR / Netflix" required>
+        </div>
+        <div class="input-group">
+          <label>Genre (optional)</label>
+          <input type="text" id="filmGenre" placeholder="e.g. Sci-Fi">
+        </div>
+      </div>
 
+      <div class="form-grid">
+        <div class="input-group">
+          <label>Poster URL (optional)</label>
+          <input type="url" id="filmPoster" placeholder="https://...jpg">
+        </div>
+        <div class="input-group">
+          <label>Your Rating</label>
+          <div class="star-input" id="starInput">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-grid full">
+        <div class="input-group">
+          <label>Review / Notes (optional)</label>
+          <textarea id="filmReview" placeholder="What did you think about this film?"></textarea>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add Film 🎬</button>
+    </form>
+  </section>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search films by name...">
+    </div>
+    <select class="filter-select" id="filterLang">
+      <option value="">All Languages</option>
+    </select>
+    <select class="filter-select" id="filterRating">
+      <option value="">All Ratings</option>
+      <option value="5">⭐⭐⭐⭐⭐ (5 only)</option>
+      <option value="4">⭐⭐⭐⭐ (4+)</option>
+      <option value="3">⭐⭐⭐ (3+)</option>
+    </select>
+  </div>
+
+  <!-- FILMS LIST -->
+  <div class="films-header">
+    <h2>📽️ My Collection</h2>
+    <div class="header-badge" id="filmCount">0 Films</div>
+  </div>
+
+  <div class="films-grid" id="filmsGrid"></div>
+
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeEditModal()">✕</button>
+    <h2>✏️ Edit Film</h2>
+    <form id="editForm">
+      <input type="hidden" id="editIndex">
+      <div class="input-group">
+        <label>Film Name</label>
+        <input type="text" id="editName" required>
+      </div>
+      <div class="input-group">
+        <label>Language</label>
+        <input type="text" id="editLang" required>
+      </div>
+      <div class="input-group">
+        <label>Cinema / Platform</label>
+        <input type="text" id="editCinema" required>
+      </div>
+      <div class="input-group">
+        <label>Genre</label>
+        <input type="text" id="editGenre">
+      </div>
+      <div class="input-group">
+        <label>Poster URL</label>
+        <input type="url" id="editPoster">
+      </div>
+      <div class="input-group">
+        <label>Rating</label>
+        <div class="star-input" id="editStarInput">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Review</label>
+        <textarea id="editReview"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Save Changes 💾</button>
+    </form>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<footer>
+  <div class="container">
+    <p>Made with ❤️ by <span>Aman Mirza</span> • © 2024</p>
+  </div>
+</footer>
+
+<script>
+// STATE
+let films = JSON.parse(localStorage.getItem('amanFilmsAdvanced')) || [];
+let currentRating = 0;
+let editRating = 0;
+
+// ELEMENTS
+const form = document.getElementById('filmForm');
+const grid = document.getElementById('filmsGrid');
+const searchInput = document.getElementById('searchInput');
+const filterLang = document.getElementById('filterLang');
+const filterRating = document.getElementById('filterRating');
+const toast = document.getElementById('toast');
+
+// STAR SETUP
+function setupStars(container, setter) {
+  container.querySelectorAll('.star').forEach(star => {
+    star.addEventListener('click', () => {
+      const val = parseInt(star.dataset.value);
+      setter(val);
+      paintStars(container, val);
+    });
+    star.addEventListener('mouseenter', () => {
+      const val = parseInt(star.dataset.value);
+      container.querySelectorAll('.star').forEach(s => {
+        s.style.color = parseInt(s.dataset.value) <= val ? '#f5b942' : '#33334a';
+      });
+    });
+  });
+  container.addEventListener('mouseleave', () => {
+    const active = container.querySelectorAll('.star.active').length;
+    paintStars(container, active);
+  });
+}
+
+function paintStars(container, rating) {
+  container.querySelectorAll('.star').forEach(s => {
+    s.classList.toggle('active', parseInt(s.dataset.value) <= rating);
+    s.style.color = parseInt(s.dataset.value) <= rating ? '#f5b942' : '#33334a';
+  });
+}
+
+setupStars(document.getElementById('starInput'), v => currentRating = v);
+setupStars(document.getElementById('editStarInput'), v => editRating = v);
+
+// SAVE
+function save() {
+  localStorage.setItem('amanFilmsAdvanced', JSON.stringify(films));
+  updateFilters();
+  renderFilms();
+  updateStats();
+}
+
+// ADD
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const film = {
+    name: document.getElementById('filmName').value.trim(),
+    language: document.getElementById('filmLang').value.trim(),
+    cinema: document.getElementById('filmCinema').value.trim(),
+    genre: document.getElementById('filmGenre').value.trim(),
+    poster: document.getElementById('filmPoster').value.trim(),
+    review: document.getElementById('filmReview').value.trim(),
+    rating: currentRating,
+    date: new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })
+  };
+  if (!film.name || !film.language || !film.cinema) return;
+  films.unshift(film);
+  save();
+  form.reset();
+  currentRating = 0;
+  paintStars(document.getElementById('starInput'), 0);
+  showToast('✅ Film added successfully!');
+  grid.scrollIntoView({ behavior:'smooth', block:'start' });
+});
+
+// DELETE
+function deleteFilm(index) {
+  if (confirm('Are you sure you want to delete this film?')) {
+    films.splice(index, 1);
+    save();
+    showToast('🗑️ Film deleted');
+  }
+}
+
+// EDIT
+function openEditModal(index) {
+  const film = films[index];
+  document.getElementById('editIndex').value = index;
+  document.getElementById('editName').value = film.name;
+  document.getElementById('editLang').value = film.language;
+  document.getElementById('editCinema').value = film.cinema;
+  document.getElementById('editGenre').value = film.genre || '';
+  document.getElementById('editPoster').value = film.poster || '';
+  document.getElementById('editReview').value = film.review || '';
+  editRating = film.rating || 0;
+  paintStars(document.getElementById('editStarInput'), editRating);
+  document.getElementById('editModal').classList.add('active');
+}
+
+function closeEditModal() {
+  document.getElementById('editModal').classList.remove('active');
+}
+
+document.getElementById('editForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const index = parseInt(document.getElementById('editIndex').value);
+  films[index] = {
+    ...films[index],
+    name: document.getElementById('editName').value.trim(),
+    language: document.getElementById('editLang').value.trim(),
+    cinema: document.getElementById('editCinema').value.trim(),
+    genre: document.getElementById('editGenre').value.trim(),
+    poster: document.getElementById('editPoster').value.trim(),
+    review: document.getElementById('editReview').value.trim(),
+    rating: editRating
+  };
+  save();
+  closeEditModal();
+  showToast('💾 Changes saved!');
+});
+
+// RENDER
+function renderFilms() {
+  const search = searchInput.value.toLowerCase().trim();
+  const langFilter = filterLang.value;
+  const ratingFilter = filterRating.value ? parseInt(filterRating.value) : 0;
+
+  const filtered = films.filter(film => {
+    const matchSearch = !search ||
+      film.name.toLowerCase().includes(search) ||
+      film.language.toLowerCase().includes(search) ||
+      (film.genre && film.genre.toLowerCase().includes(search));
+    const matchLang = !langFilter || film.language === langFilter;
+    const matchRating = !ratingFilter || (film.rating || 0) >= ratingFilter;
+    return matchSearch && matchLang && matchRating;
+  });
+
+  grid.innerHTML = '';
+
+  if (filtered.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🎞️</div>
+        <h3>${films.length === 0 ? 'No films added yet' : 'No films match your search'}</h3>
+        <p>${films.length === 0 ? 'Start by adding your first film above!' : 'Try different keywords.'}</p>
+      </div>
+    `;
+    document.getElementById('filmCount').textContent = '0 Films';
+    return;
+  }
+
+  filtered.forEach(film => {
+    const realIndex = films.indexOf(film);
+    const card = document.createElement('div');
+    card.className = 'film-card';
+    const posterStyle = film.poster ? `background-image:url('${escapeAttr(film.poster)}');` : '';
+    const posterContent = film.poster ? '' : '🎬';
+
+    card.innerHTML = `
+      <div class="film-poster" style="${posterStyle}">${posterContent}</div>
+      <div class="film-body">
+        <div class="film-title">${escapeHtml(film.name)}</div>
+        <div class="film-stars">${renderStars(film.rating || 0)}</div>
+        <div class="film-meta">
+          <span class="badge badge-lang">🌐 ${escapeHtml(film.language)}</span>
+          <span class="badge badge-cinema">📍 ${escapeHtml(film.cinema)}</span>
+          ${film.genre ? `<span class="badge badge-genre">${escapeHtml(film.genre)}</span>` : ''}
+        </div>
+        ${film.review ? `<div class="film-review">${escapeHtml(film.review)}</div>` : ''}
+        <div class="film-date">📅 ${film.date}</div>
+        <div class="film-actions">
+          <button class="action-btn edit" onclick="openEditModal(${realIndex})">✏️ Edit</button>
+          <button class="action-btn delete" onclick="deleteFilm(${realIndex})">🗑️ Delete</button>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+
+  document.getElementById('filmCount').textContent =
+    filtered.length + (filtered.length === 1 ? ' Film' : ' Films');
+}
+
+function renderStars(rating) {
+  let html = '';
+  for (let i = 1; i <= 5; i++) {
+    html += `<span class="${i <= rating ? 'filled' : 'empty'}">★</span>`;
+  }
+  return html;
+}
+
+// FILTERS
+function updateFilters() {
+  const langs = [...new Set(films.map(f => f.language))].sort();
+  const currentVal = filterLang.value;
+  filterLang.innerHTML = '<option value="">All Languages</option>' +
+    langs.map(l => `<option value="${escapeAttr(l)}">${escapeHtml(l)}</option>`).join('');
+  filterLang.value = currentVal;
+}
+
+// STATS
+function updateStats() {
+  document.getElementById('statTotal').textContent = films.length;
+  document.getElementById('headerCount').textContent = films.length;
+
+  const rated = films.filter(f => f.rating > 0);
+  const avg = rated.length
+    ? (rated.reduce((s, f) => s + f.rating, 0) / rated.length).toFixed(1)
+    : '0.0';
+  document.getElementById('statAvg').textContent = avg;
+
+  document.getElementById('statLangs').textContent = new Set(films.map(f => f.language)).size;
+
+  const top = [...rated].sort((a, b) => b.rating - a.rating)[0];
+  const topEl = document.getElementById('statTop');
+  if (top) {
+    topEl.textContent = top.name.length > 12 ? top.name.slice(0, 12) + '…' : top.name;
+    topEl.style.fontSize = '1.1rem';
+  } else {
+    topEl.textContent = '—';
+    topEl.style.fontSize = '1.8rem';
+  }
+}
+
+// TOAST
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+// HELPERS
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function escapeAttr(text) {
+  return String(text).replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+// EVENTS
+searchInput.addEventListener('input', renderFilms);
+filterLang.addEventListener('change', renderFilms);
+filterRating.addEventListener('change', renderFilms);
+document.getElementById('editModal').addEventListener('click', (e) => {
+  if (e.target.id === 'editModal') closeEditModal();
+});
+
+// INIT
+renderFilms();
+updateFilters();
+updateStats();
+</script>
 </body>
 </html>
